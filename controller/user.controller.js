@@ -23,7 +23,7 @@ const addUser = async (req, res) => {
     // check current event is expair or not
     const newEvent = await Event.findById(id);
     const today = new Date();
-    console.log(today, "hell", newEvent.startDate);
+    // console.log(today, "hell", newEvent.startDate);
     if (newEvent.startDate < today) {
       return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
     }
@@ -35,7 +35,6 @@ const addUser = async (req, res) => {
     const populatedUser = await User.findById(newUser._id).populate("eventId");
 
     const start = new Date(populatedUser.eventId.startDate);
-    console.log(start);
     const startD = start.toLocaleString("en-US", {
       year: "numeric",
       month: "short",
@@ -46,6 +45,7 @@ const addUser = async (req, res) => {
 
     const formatted = new Intl.DateTimeFormat("en-CA").format(date);
     const ticketData = {
+      req,
       name: populatedUser.name,
       bookingId: populatedUser._id.toString(),
       bookingDate: Date.now(),
@@ -56,7 +56,7 @@ const addUser = async (req, res) => {
     };
 
     const URL = await generateTicketPDF(ticketData);
-    console.log("URL", URL);
+    // console.log("URL", URL);
 
     const userData = {
       gmail: populatedUser.email,
@@ -65,16 +65,17 @@ const addUser = async (req, res) => {
       eventShortName: populatedUser.eventId.eventShortName,
       startDate: `${formatted}`, //(${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
       venue: populatedUser.eventId.venue,
-      link: "https://files.konfhub.com/64a405a5-a32a-4e9b-8d53-a9d1184b66da/tickets/0fd73406_ticket.pdf", //URL,
+      link: URL.fileURL,
     };
 
     const emaildata = await nodeEmailFunction(userData);
-    const numberData = await whatsappAPi(userData);
+    const numberData = whatsappAPi(userData);
 
     res
       .status(201)
-      .json({ message: "user add successful", URL, emaildata, numberData });
+      .json({ message: "Ticket is generated successfully", URL: URL.fileName });
   } catch (error) {
+    // console.log(error.message);
     res
       .status(500)
       .json({ message: "Internal Server Error", error: error.message });

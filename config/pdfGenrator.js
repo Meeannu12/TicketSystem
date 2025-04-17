@@ -49,7 +49,7 @@ async function generateTicketPDF(data) {
     month: "long",
     day: "numeric",
   });
-  console.log("date", formattedDate);
+  // console.log("date", formattedDate);
   doc.text(`Booking Date: ${formattedDate}`, leftX, 40);
   doc.text(`Booking ID: ${data.bookingId}`, leftX, 55);
   // doc.image(qrPath, rightX, 10, { width: 130 });
@@ -92,12 +92,12 @@ async function generateTicketPDF(data) {
   doc.image(logoPath, logoX, logoY, { width: logoWidth });
 
   doc.end();
-  // const protocol = req.protocol; // "http"
-  // const host = req.get("host"); // "localhost:3000"
-  // const fileURL = `${protocol}://${host}/uploads/${filePath}`;
-  // console.log("🎉 PDF generated:", filePath);
-  console.log("coustom URL", filePath);
-  return filePath;
+  const fileName = filePath.replace("/var/www/TicketSystem/uploads/", "");
+  const protocol = data.req.protocol; // "http"
+  const host = data.req.get("host"); // "localhost:3000"
+  const fileURL = `${protocol}://${host}/uploads/${fileName}`;
+  // console.log("coustom URL", fileURL);
+  return { fileURL, fileName };
 }
 
 // generateTicketPDF(ticketData);
