@@ -9,11 +9,14 @@ const path = require("path");
 const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 8000;
+
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend URL
+    origin: ["http://localhost:5173", "https://event.neetadvisor.in"], // Include all frontend URLs
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // if you're using cookies/auth headers
+    credentials: true,
+    exposedHeaders: ["Content-Disposition", "Content-Type", "Content-Length"], // Important for file downloads
+    maxAge: 600, // Cache preflight requests
   })
 );
 
