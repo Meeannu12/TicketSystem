@@ -59,7 +59,7 @@ const getEventById = async (req, res) => {
     if (!id) {
       return res.status(400).json({ message: "Id is required in params" });
     }
-    console.log("Event Id", id);
+    // console.log("Event Id", id);
     const newEvent = await Event.findById(id);
     if (!newEvent) {
       return res.status(404).json({ message: "This Event is not exist" });

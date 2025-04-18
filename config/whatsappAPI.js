@@ -1,7 +1,7 @@
 const { default: axios } = require("axios");
 
 async function whatsappAPi(data) {
-  console.log("whatsappAPi", data);
+  // console.log("whatsappAPi", data);
   try {
     const response = await axios.post(process.env.WHATSAPP_API, {
       type: "richTemplate",
@@ -18,7 +18,7 @@ async function whatsappAPi(data) {
       ],
       sender_phone: `${data.number}`,
     });
-    console.log("whatsapp response", response.data);
+    // console.log("whatsapp response", response.data);
     return response.data;
   } catch (error) {
     console.log("Error", error.message);

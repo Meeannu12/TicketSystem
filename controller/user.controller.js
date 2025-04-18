@@ -73,7 +73,7 @@ const addUser = async (req, res) => {
 
     res
       .status(201)
-      .json({ message: "Ticket is generated successfully", URL: URL.fileName });
+      .json({ message: "Ticket is generated successfully", URL });
   } catch (error) {
     // console.log(error.message);
     res

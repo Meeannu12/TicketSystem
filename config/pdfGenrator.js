@@ -95,7 +95,7 @@ async function generateTicketPDF(data) {
   const fileName = filePath.replace("/var/www/TicketSystem/uploads/", "");
   const protocol = data.req.protocol; // "http"
   const host = data.req.get("host"); // "localhost:3000"
-  const fileURL = `${protocol}://${host}/uploads/${fileName}`;
+  const fileURL = `${protocol}s://${host}/uploads/${fileName}`;
   // console.log("coustom URL", fileURL);
   return { fileURL, fileName };
 }
