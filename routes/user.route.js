@@ -1,11 +1,14 @@
 const express = require("express");
 const addUser = require("../controller/user.controller");
+const { appendRow } = require("../config/googleSheetService");
 
 const userRoutes = express.Router();
 
 userRoutes.post("/createTicket/:id", addUser);
 
-userRoutes.get("/neet", (req, res) => {
+// crm data enter on google sheet
+
+userRoutes.get("/neet", async (req, res) => {
   const {} = req.query;
   try {
     // 1. #CNUM# For Customer Number
@@ -30,13 +33,26 @@ userRoutes.get("/neet", (req, res) => {
     if (req.query.STATUS) callData.status = req.query.STATUS;
     if (req.query.REC) callData.recording = req.query.REC;
 
+    const values = [
+      callData.customerNumber,
+      callData.virtualNumber,
+      callData.startTime,
+      callData.endTime,
+      callData.duration,
+      callData.executiveNumber,
+      callData.referenceNumber,
+      callData.status,
+      callData.recording,
+    ];
+
+    const dataAppend = await appendRow(values);
     console.log("dataget", callData);
 
     res.status(200).json({
       message: "Received call data",
-      data: callData,
     });
   } catch (error) {
+    console.log(error, error.message);
     res.status(500).json({ message: error.message });
   }
 });

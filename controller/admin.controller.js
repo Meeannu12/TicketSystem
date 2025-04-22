@@ -1,6 +1,6 @@
 const Admin = require("../model/admin");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcryptjs");
 
 const addAdmin = async (req, res) => {
   try {
@@ -69,7 +69,9 @@ const loginAdmin = async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.status(200).json({ message: "login Successful", token });
+    res
+      .status(200)
+      .json({ message: "login Successful", token, role: user.role });
   } catch (error) {
     res
       .status(500)

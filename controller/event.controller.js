@@ -73,7 +73,18 @@ const getEventById = async (req, res) => {
 const getAllEvent = async (req, res) => {
   try {
     const newEvent = await Event.find({});
-    res.status(200).json({ message: "get all Events", events: newEvent });
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0]; // e.g. '2025-04-19'
+
+    const futureEvents = newEvent.filter((event) => {
+      const eventDate = new Date(event.startDate).toISOString().split("T")[0];
+      return eventDate >= today;
+    });
+
+    res.status(200).json({
+      message: "get all Events",
+      events: futureEvents,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
