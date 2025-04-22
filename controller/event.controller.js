@@ -10,6 +10,7 @@ const addEvent = async (req, res) => {
     endTime,
     venue,
     description,
+    locationURL,
   } = req.body;
   try {
     if (
@@ -19,7 +20,8 @@ const addEvent = async (req, res) => {
       !startTime ||
       !endTime ||
       !venue ||
-      !description
+      !description ||
+      !locationURL
     ) {
       res.status(400).json({
         error: "missing fields required",
@@ -33,9 +35,12 @@ const addEvent = async (req, res) => {
           endTime: !endTime ? "endTime is required" : undefined,
           description: !description ? "description is required" : undefined,
           venue: !venue ? "venue is required" : undefined,
+          locationURL: !locationURL ? "locationURL is require" : undefined,
         },
       });
     }
+
+    
     let newEvent = new Event({
       eventName,
       eventShortName,

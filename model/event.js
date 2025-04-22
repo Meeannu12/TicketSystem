@@ -12,6 +12,8 @@ const EventSchema = new mongoose.Schema(
     endTime: String,
     description: String,
     venue: String,
+    locationURL: String,
+    imageURL: String,
   },
   {
     versionKey: false,
