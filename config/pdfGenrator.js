@@ -79,9 +79,14 @@ async function generateTicketPDF(data) {
   doc.font("Helvetica").text(` ${data.ticketName}`);
   doc.moveDown(0.5);
   doc.font("Helvetica-Bold").text("Location:", { continued: true });
-  doc.font("Helvetica").text(` ${data.location}`, {
-    width: doc.page.width - 80,
-  });
+  doc
+    .font("Helvetica")
+    .fillColor("blue")
+    .text(` ${data.location}`, {
+      link: `${data.locationURL}`,
+      underline: true,
+      width: doc.page.width - 80,
+    });
   // Add logo centered at bottom
   const logoPath = path.join(assetsDir, "Logo.png");
   // const logoPath = "./assets/Logo.png";

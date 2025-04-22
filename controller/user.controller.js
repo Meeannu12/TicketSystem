@@ -53,6 +53,7 @@ const addUser = async (req, res) => {
       eventDate: `${startD} (${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
       ticketName: populatedUser.eventId.eventShortName,
       location: populatedUser.eventId.venue,
+      locationURL: populatedUser.eventId.locationURL,
     };
 
     const URL = await generateTicketPDF(ticketData);

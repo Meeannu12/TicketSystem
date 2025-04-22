@@ -40,7 +40,12 @@ const addEvent = async (req, res) => {
       });
     }
 
-    
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+
+    console.log(req.file.filename);
+
     let newEvent = new Event({
       eventName,
       eventShortName,
@@ -49,9 +54,12 @@ const addEvent = async (req, res) => {
       endTime,
       description,
       venue,
+      imageURL: req.file.filename,
+      locationURL,
     });
+
     newEvent = await newEvent.save();
-    res.status(201).json({ message: "Event Add Successful", newEvent });
+    res.status(201).json({ message: "Event Add Successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
