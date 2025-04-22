@@ -105,15 +105,26 @@ const getAllEvent = async (req, res) => {
 
 const editEvent = async (req, res) => {
   try {
-    if (req.query.MOBILE) callData.customerNumber = req.query.MOBILE;
-    if (req.query.VMN) callData.virtualNumber = req.query.VMN;
-    if (req.query.TIME) callData.startTime = req.query.TIME;
-    if (req.query.END) callData.endTime = req.query.END;
-    if (req.query.DURATION) callData.duration = req.query.DURATION;
-    if (req.query.EXENO) callData.executiveNumber = req.query.EXENO;
-    if (req.query.RFN) callData.referenceNumber = req.query.RFN;
-    if (req.query.STATUS) callData.status = req.query.STATUS;
-    if (req.query.REC) callData.recording = req.query.REC;
+    const id = req.query.id;
+    if (!id) {
+      return res.status(400).json({ message: "Event id must be requiredF" });
+    }
+    const callData = {};
+    if (req.query.eventName) callData.eventName = req.query.eventName;
+    if (req.query.eventShortName)
+      callData.eventShortName = req.query.eventShortName;
+    if (req.query.startDate) callData.startDate = req.query.startDate;
+    if (req.query.startTime) callData.startTime = req.query.startTime;
+    if (req.query.endTime) callData.endTime = req.query.endTime;
+    if (req.query.venue) callData.description = req.query.venue;
+    if (req.query.description) callData.venue = req.query.description;
+    if (req.query.locationURL) callData.locationURL = req.query.locationURL;
+
+    await Event.updateOne(
+      { _id: id }, // ID ya filter condition
+      { $set: callData } // dynamic data
+    );
+    res.status(200).json({ message: "Event update successful" });
   } catch (error) {
     res.status(500).json({ message: "error.message" });
   }
@@ -123,4 +134,5 @@ module.exports = {
   addEvent,
   getEventById,
   getAllEvent,
+  editEvent
 };
