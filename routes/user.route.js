@@ -1,10 +1,11 @@
 const express = require("express");
-const addUser = require("../controller/user.controller");
+const { addUser, checkInUser } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 
 const userRoutes = express.Router();
 
 userRoutes.post("/createTicket/:id", addUser);
+userRoutes.get("/checkInUser/:id", checkInUser);
 
 // crm data enter on google sheet
 

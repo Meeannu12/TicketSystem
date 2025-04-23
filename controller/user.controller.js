@@ -101,10 +101,25 @@ const addUser = async (req, res) => {
 
 const checkInUser = async (req, res) => {
   try {
-    const { eventId, userid } = req.body;
+    const id = req.params.id;
+    const checkInUser = await User.findById(id);
+    if (!checkInUser) {
+      return res.status(404).json({ message: "User not found in Database" });
+    }
+
+    if (checkInUser.checkIn) {
+      return res.status(200).json({ message: "user already checkIn" });
+    }
+
+    await User.findByIdAndUpdate(
+      checkInUser._id,
+      { checkIn: true },
+      { new: true }
+    );
+    res.status(200).json({ message: "user checkIn successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = addUser;
+module.exports = { addUser, checkInUser };
