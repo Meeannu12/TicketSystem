@@ -28,6 +28,18 @@ const addUser = async (req, res) => {
       return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
     }
 
+    // check if this event user already exist then throw error
+    const existingUser = await User.findOne({
+      number,
+      email,
+      eventId: id,
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "You have already registered for this event.",
+      });
+    }
     let newUser = new User({ name, number, email, eventId: id });
     newUser = await newUser.save();
 
@@ -84,6 +96,14 @@ const addUser = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+const checkInUser = async (req, res) => {
+  try {
+    const { eventId, userid } = req.body;
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 

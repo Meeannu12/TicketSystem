@@ -28,4 +28,7 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+// ✅ This makes (number, email, eventId) unique together
+UserSchema.index({ number: 1, email: 1, eventId: 1 }, { unique: true });
+
 module.exports = mongoose.model("User", UserSchema);
