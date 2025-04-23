@@ -69,12 +69,16 @@ const addUser = async (req, res) => {
       link: URL.fileURL,
     };
 
+    await User.findByIdAndUpdate(
+      newUser._id,
+      { url: URL.fileURL },
+      { new: true }
+    );
+
     const emaildata = await nodeEmailFunction(userData);
     const numberData = whatsappAPi(userData);
 
-    res
-      .status(201)
-      .json({ message: "Ticket is generated successfully", URL });
+    res.status(201).json({ message: "Ticket is generated successfully", URL });
   } catch (error) {
     // console.log(error.message);
     res
