@@ -21,6 +21,7 @@ const UserSchema = new mongoose.Schema(
       ref: "Events",
       required: true,
     },
+    
   },
   {
     versionKey: false,

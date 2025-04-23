@@ -12,7 +12,11 @@ const PORT = process.env.PORT || 8000;
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://event.neetadvisor.in"], // Include all frontend URLs
+    origin: [
+      "http://localhost:5173",
+      "https://event.neetadvisor.in",
+      "http://192.168.1.178:5173",
+    ], // Include all frontend URLs
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     exposedHeaders: ["Content-Disposition", "Content-Type", "Content-Length"], // Important for file downloads
