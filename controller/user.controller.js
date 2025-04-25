@@ -108,7 +108,9 @@ const checkInUser = async (req, res) => {
     }
 
     if (checkInUser.checkIn) {
-      return res.status(200).json({ message: "user already checkIn" });
+      return res
+        .status(200)
+        .json({ message: "user already checkedIn", user: checkInUser });
     }
 
     await User.findByIdAndUpdate(
@@ -116,10 +118,47 @@ const checkInUser = async (req, res) => {
       { checkIn: true },
       { new: true }
     );
-    res.status(200).json({ message: "user checkIn successful" });
+    res
+      .status(200)
+      .json({ message: "user checkIn successfully", user: checkInUser });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { addUser, checkInUser };
+// const getAllnumber = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const getUser = await User.find({ eventId: id }).populate("eventId");
+//     // const numbers = getNumber.map((user) => user.number);
+//     res.status(200).json({ message: "get all User", user: getUser });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+const getAllStudents = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const page = parseInt(req.query.page) || 1; // default to page 1
+    const limit = parseInt(req.query.limit) || 50; // default to 10 items per page
+    const newUsers = await User.find({ eventId: id }).populate("eventId");
+
+    // If page and limit are provided, paginate the results
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    const resultData = newUsers.slice(startIndex, endIndex);
+
+    const results = {
+      totalItems: resultData.length,
+      currentPage: page,
+      totalPages: Math.ceil(resultData.length / limit),
+      data: resultData,
+    };
+    res.status(200).json({ message: "All Event User", results });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { addUser, checkInUser, getAllStudents };

@@ -107,7 +107,7 @@ const editEvent = async (req, res) => {
   try {
     const id = req.query.id;
     if (!id) {
-      return res.status(400).json({ message: "Event id must be requiredF" });
+      return res.status(400).json({ message: "Event id must be required" });
     }
     const callData = {};
     if (req.query.eventName) callData.eventName = req.query.eventName;
@@ -130,9 +130,30 @@ const editEvent = async (req, res) => {
   }
 };
 
+const reUploadEventImageById = async (req, res) => {
+  try {
+    const { id } = req.body;
+    if (!req.file) {
+      return res.status(400).send("No file uploaded.");
+    }
+    console.log(req.file.filename);
+
+    let newImage = await Event.findByIdAndUpdate(
+      id,
+      { imageURL: req.file.filename },
+      { new: true }
+    );
+
+    res.status(204).json({ message: "Image update successful", newImage });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addEvent,
   getEventById,
   getAllEvent,
-  editEvent
+  editEvent,
+  reUploadEventImageById
 };
