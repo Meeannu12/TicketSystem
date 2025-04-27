@@ -7,12 +7,28 @@ const {
   reUploadEventImageById,
 } = require("../controller/event.controller");
 const upload = require("../config/multer");
+const {
+  authMiddleware,
+  adminMiddleware,
+} = require("../middleware/authmiddleware");
 
 const eventRoute = express.Router();
 
-eventRoute.post("/addEvent", upload.single("image"), addEvent);
-eventRoute.put("/updateImage", upload.single("image"), reUploadEventImageById);
-eventRoute.put("/editEvent", editEvent);
+eventRoute.post(
+  "/addEvent",
+  authMiddleware,
+  adminMiddleware,
+  upload.single("image"),
+  addEvent
+);
+eventRoute.put(
+  "/updateImage",
+  authMiddleware,
+  adminMiddleware,
+  upload.single("image"),
+  reUploadEventImageById
+);
+eventRoute.put("/editEvent", authMiddleware, adminMiddleware, editEvent);
 eventRoute.get("/getEvent/:id", getEventById);
 eventRoute.get("/getEvent", getAllEvent);
 

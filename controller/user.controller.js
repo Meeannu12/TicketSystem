@@ -99,6 +99,28 @@ const addUser = async (req, res) => {
   }
 };
 
+const getStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const checkInStatus = await User.findById(id)
+      .select("name checkIn eventId") // only select 'name', 'checkIn', and 'eventId' from user
+      .populate({
+        path: "eventId",
+        select: "eventName startDate startTime venue", // only select these fields from Event
+      });
+    if (!checkInStatus) {
+      return res.status(404).json({ message: "User not found in Database" });
+    }
+
+    res.status(200).json({
+      message: "user checkIn Status successfully",
+      user: checkInStatus,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const checkInUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -161,4 +183,4 @@ const getAllStudents = async (req, res) => {
   }
 };
 
-module.exports = { addUser, checkInUser, getAllStudents };
+module.exports = { addUser, checkInUser, getAllStudents, getStatus };

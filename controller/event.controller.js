@@ -1,6 +1,6 @@
 const Event = require("../model/event");
 
-// add New Event
+// add New Event by admin only
 const addEvent = async (req, res) => {
   const {
     eventName,
@@ -83,6 +83,7 @@ const getEventById = async (req, res) => {
   }
 };
 
+// get all event
 const getAllEvent = async (req, res) => {
   try {
     const newEvent = await Event.find({});
@@ -103,6 +104,7 @@ const getAllEvent = async (req, res) => {
   }
 };
 
+// edit event only by admin
 const editEvent = async (req, res) => {
   try {
     const id = req.query.id;
@@ -116,8 +118,8 @@ const editEvent = async (req, res) => {
     if (req.query.startDate) callData.startDate = req.query.startDate;
     if (req.query.startTime) callData.startTime = req.query.startTime;
     if (req.query.endTime) callData.endTime = req.query.endTime;
-    if (req.query.venue) callData.description = req.query.venue;
-    if (req.query.description) callData.venue = req.query.description;
+    if (req.query.venue) callData.venue = req.query.venue;
+    if (req.query.description) callData.description = req.query.description;
     if (req.query.locationURL) callData.locationURL = req.query.locationURL;
 
     await Event.updateOne(
@@ -130,6 +132,7 @@ const editEvent = async (req, res) => {
   }
 };
 
+// reupload  image by admin
 const reUploadEventImageById = async (req, res) => {
   try {
     const { id } = req.body;
@@ -155,5 +158,5 @@ module.exports = {
   getEventById,
   getAllEvent,
   editEvent,
-  reUploadEventImageById
+  reUploadEventImageById,
 };
