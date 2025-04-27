@@ -47,7 +47,8 @@ const addUser = async (req, res) => {
     const populatedUser = await User.findById(newUser._id).populate("eventId");
 
     const start = new Date(populatedUser.eventId.startDate);
-    const startD = start.toLocaleString("en-US", {
+    const startD = start.toLocaleString("en-In", {
+      timeZone: "Asia/Kolkata",
       year: "numeric",
       month: "short",
       day: "2-digit",
@@ -183,4 +184,44 @@ const getAllStudents = async (req, res) => {
   }
 };
 
-module.exports = { addUser, checkInUser, getAllStudents, getStatus };
+const resendTicket = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const newUser = await User.findById(id).populate("eventId");
+    if (!newUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const startD = newUser.eventId.startDate.toLocaleString("en-In", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+
+    const userData = {
+      gmail: newUser.email,
+      number: newUser.number,
+      name: newUser.name,
+      eventShortName: newUser.eventId.eventShortName,
+      startDate: startD, //(${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
+      venue: newUser.eventId.venue,
+      link: newUser.url,
+    };
+
+    const emaildata = nodeEmailFunction(userData);
+    const numberData = whatsappAPi(userData);
+
+    res.status(200).json({ message: "Ticket resend successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  addUser,
+  checkInUser,
+  getAllStudents,
+  getStatus,
+  resendTicket,
+};

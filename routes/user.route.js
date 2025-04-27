@@ -5,6 +5,7 @@ const {
   getAllStudents,
   getAllnumber,
   getStatus,
+  resendTicket,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -23,6 +24,7 @@ userRoutes.get(
   adminMiddleware,
   getAllStudents
 );
+userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 // userRoutes.get("/getNumbers/:id", authMiddleware, getAllnumber);
 
 // crm data enter on google sheet
