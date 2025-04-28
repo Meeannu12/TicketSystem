@@ -18,14 +18,14 @@ async function nodeEmailFunction(data) {
       address: process.env.USER_GMAIL,
     },
     to: data.gmail,
-    subject: `${data.eventShortName}`,
+    subject: `${data.eventName}`,
     text: `Hi ${data.name},
 
 Thank you for showing interest with us!
 
-⏰Your event registration for Biggest Seminar is Confirmed.
+⏰Your event registration for ${data.eventName} is Confirmed.
 
-✅ Topic- ${data.eventShortName} 
+✅ Topic- Attend INDIA'S Mega Event on ${data.eventShortName} 
 
 🕦Date & Time:
 ${data.startDate}

@@ -66,7 +66,7 @@ async function generateTicketPDF(data) {
   doc.fontSize(10);
 
   doc.font("Helvetica-Bold").text("Event Name:", { continued: true });
-  doc.font("Helvetica").text(` ${data.eventName}`, {
+  doc.font("Helvetica").text(`Attend INDIA'S Mega Event on ${data.eventShortName}`, {
     width: doc.page.width - 80,
     lineGap: 2,
   });
@@ -76,7 +76,7 @@ async function generateTicketPDF(data) {
   doc.font("Helvetica").text(` ${data.eventDate}`);
   doc.moveDown(0.5);
   doc.font("Helvetica-Bold").text("Ticket Name:", { continued: true });
-  doc.font("Helvetica").text(` ${data.ticketName}`);
+  doc.font("Helvetica").text(` ${data.eventName}`);
   doc.moveDown(0.5);
   doc.font("Helvetica-Bold").text("Location:", { continued: true });
   doc

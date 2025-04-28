@@ -11,7 +11,7 @@ async function whatsappAPi(data) {
       templateArgs: [
         `${data.link}`,
         `${data.name}`,
-        `${data.eventShortName}`,
+        `Attend INDIA'S Mega Event on ${data.eventShortName}`,
         // `${data.eventName}`,
         `${data.startDate}`,
         `${data.venue}`,

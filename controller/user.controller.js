@@ -64,7 +64,7 @@ const addUser = async (req, res) => {
       bookingDate: Date.now(),
       eventName: populatedUser.eventId.eventName,
       eventDate: `${startD} (${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
-      ticketName: populatedUser.eventId.eventShortName,
+      eventShortName: populatedUser.eventId.eventShortName,
       location: populatedUser.eventId.venue,
       locationURL: populatedUser.eventId.locationURL,
     };
