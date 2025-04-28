@@ -98,7 +98,9 @@ const addUser = async (req, res) => {
     const emaildata = await nodeEmailFunction(userData);
     const numberData = whatsappAPi(userData);
 
-    res.status(201).json({ message: "Ticket is generated successfully", URL });
+    res
+      .status(201)
+      .json({ message: "Ticket is generated successfully", user: newUser._id });
   } catch (error) {
     // console.log(error.message);
     res
