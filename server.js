@@ -25,11 +25,28 @@ app.use(
 );
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); 
 db();
 
 // This serves files from "uploads" folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Suppose user sends request like /download?userId=123
+app.get('/download/:id', (req, res) => {
+  const id = req.params.id; // You get user ID from query
+
+  // Find file based on user ID (you can use DB, or map manually)
+  // For example, assume each user's file is named as userId.pdf
+  const filePath = path.join(__dirname, 'uploads', `${id}.pdf`);
+
+  // Send the file
+  res.download(filePath, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(500).send('Could not download file.');
+    }
+  });
+});
 
 const api = process.env.API;
 
