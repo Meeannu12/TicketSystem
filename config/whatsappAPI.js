@@ -17,7 +17,7 @@ async function whatsappAPi(data) {
         `${data.venue}`,
         `${data.link}`,
       ],
-      sender_phone: `${data.number}`,
+      sender_phone: `91${data.number}`,
     });
     // console.log("whatsapp response", response.data);
     return response.data;
