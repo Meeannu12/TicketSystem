@@ -72,12 +72,19 @@ const addUser = async (req, res) => {
     const URL = await generateTicketPDF(ticketData);
     // console.log("URL", URL);
 
+    const formattedDate = new Date(formatted).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
     const userData = {
       gmail: populatedUser.email,
       number: populatedUser.number,
       name: populatedUser.name,
       eventShortName: populatedUser.eventId.eventShortName,
-      startDate: `${formatted}`, //(${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
+      eventName: populatedUser.eventId.eventName,
+      startDate: `${formattedDate} ${populatedUser.eventId.startTime}`, //to ${populatedUser.eventId.endTime})`,
       venue: populatedUser.eventId.venue,
       link: URL.fileURL,
     };
@@ -163,20 +170,20 @@ const checkInUser = async (req, res) => {
 const getAllStudents = async (req, res) => {
   const id = req.params.id;
   try {
-    const page = parseInt(req.query.page) || 1; // default to page 1
-    const limit = parseInt(req.query.limit) || 50; // default to 10 items per page
+    // const page = parseInt(req.query.page) || 1; // default to page 1
+    // const limit = parseInt(req.query.limit) || 50; // default to 10 items per page
     const newUsers = await User.find({ eventId: id }).populate("eventId");
 
     // If page and limit are provided, paginate the results
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    const resultData = newUsers.slice(startIndex, endIndex);
+    // const startIndex = (page - 1) * limit;
+    // const endIndex = page * limit;
+    // const resultData = newUsers.slice(startIndex, endIndex);
 
     const results = {
-      totalItems: resultData.length,
-      currentPage: page,
-      totalPages: Math.ceil(resultData.length / limit),
-      data: resultData,
+      totalUsers: newUsers.length,
+      // currentPage: page,
+      // totalPages: Math.ceil(resultData.length / limit),
+      data: newUsers,
     };
     res.status(200).json({ message: "All Event User", results });
   } catch (error) {
@@ -192,11 +199,19 @@ const resendTicket = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const startD = newUser.eventId.startDate.toLocaleString("en-In", {
-      timeZone: "Asia/Kolkata",
+    // const startD = newUser.eventId.startDate.toLocaleString("en-In", {
+    //   timeZone: "Asia/Kolkata",
+    //   year: "numeric",
+    //   month: "short",
+    //   day: "2-digit",
+    // });
+
+    const formattedDate = new Date(
+      newUser.eventId.startDate
+    ).toLocaleDateString("en-IN", {
       year: "numeric",
-      month: "short",
-      day: "2-digit",
+      month: "long",
+      day: "numeric",
     });
 
     const userData = {
@@ -204,7 +219,8 @@ const resendTicket = async (req, res) => {
       number: newUser.number,
       name: newUser.name,
       eventShortName: newUser.eventId.eventShortName,
-      startDate: startD, //(${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
+      eventName: newUser.eventId.eventName,
+      startDate: `${formattedDate} ${newUser.eventId.startTime}`, //to ${populatedUser.eventId.endTime})`,
       venue: newUser.eventId.venue,
       link: newUser.url,
     };
@@ -218,10 +234,33 @@ const resendTicket = async (req, res) => {
   }
 };
 
+const addUrl = async (req, res) => {
+  const id = req.params.id;
+  const { url } = req.body;
+  try {
+    const newUser = await User.findByIdAndUpdate(id, { url });
+    console.log("hello", newUser);
+    res.status(201).json({ message: "message user url update", newUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// const resendAllTicket = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const allUser = await User.find({ eventId: id });
+
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 module.exports = {
   addUser,
   checkInUser,
   getAllStudents,
   getStatus,
   resendTicket,
+  addUrl,
 };
