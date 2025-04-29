@@ -169,7 +169,7 @@ const checkInUser = async (req, res) => {
 //   }
 // };
 
-const getAllStudents = async (req, res) => {
+const getAllStudentByEvent = async (req, res) => {
   const id = req.params.id;
   try {
     // const page = parseInt(req.query.page) || 1; // default to page 1
@@ -188,6 +188,38 @@ const getAllStudents = async (req, res) => {
       data: newUsers,
     };
     res.status(200).json({ message: "All Event User", results });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getAllStudents = async (req, res) => {
+  try {
+    const newUsers = await User.find({}).populate("eventId");
+
+    const checkInStudent = newUsers.filter((user) => user.checkIn);
+
+    const eventId = await User.aggregate([
+      {
+        $group: {
+          _id: "$eventId",
+          totalStudents: { $sum: 1 },
+          checkInStudents: {
+            $sum: {
+              $cond: [{ $eq: ["$checkIn", true] }, 1, 0],
+            },
+          },
+        },
+      },
+    ]);
+
+    const results = {
+      totalStudents: newUsers.length,
+      events: eventId,
+      totalChackIn: checkInStudent.length,
+      // totalStudent: newUsers,
+    };
+    res.status(200).json({ message: "all students information", results });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -248,6 +280,14 @@ const addUrl = async (req, res) => {
   }
 };
 
+// const getAllUsers = async (req,res)=>{
+//   try {
+
+//   } catch (error) {
+
+//   }
+// }
+
 // const resendAllTicket = async (req, res) => {
 //   const id = req.params.id;
 //   try {
@@ -262,6 +302,7 @@ module.exports = {
   addUser,
   checkInUser,
   getAllStudents,
+  getAllStudentByEvent,
   getStatus,
   resendTicket,
   addUrl,

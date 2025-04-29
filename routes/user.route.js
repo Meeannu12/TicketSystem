@@ -6,6 +6,7 @@ const {
   getStatus,
   resendTicket,
   addUrl,
+  getAllStudentByEvent,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -14,19 +15,26 @@ const {
 } = require("../middleware/authmiddleware");
 
 const userRoutes = express.Router();
-
+//create ticket api
 userRoutes.post("/createTicket/:id", addUser);
+// if add user id then user checkIn status Ture
 userRoutes.get("/checkInUser/:id", authMiddleware, checkInUser);
+//if enter userId on pramas then show user details
 userRoutes.get("/checkInStatus/:id", authMiddleware, getStatus);
+//get all student add on single event
 userRoutes.get(
   "/allStudent/:id",
   authMiddleware,
   adminMiddleware,
-  getAllStudents
+  getAllStudentByEvent
 );
+
+//get all student on every event
+userRoutes.get("/allStudent", getAllStudents);
+// if again send ticket then use this api
 userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
+// dummy api
 userRoutes.post("/addUrl/:id", addUrl);
-// userRoutes.get("/getNumbers/:id", authMiddleware, getAllnumber);
 
 // crm data enter on google sheet
 
