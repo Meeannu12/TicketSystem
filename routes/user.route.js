@@ -30,7 +30,7 @@ userRoutes.get(
 );
 
 //get all student on every event
-userRoutes.get("/allStudent", getAllStudents);
+userRoutes.get("/allStudent",authMiddleware, getAllStudents);
 // if again send ticket then use this api
 userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 // dummy api
