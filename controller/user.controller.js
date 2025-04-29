@@ -147,7 +147,7 @@ const checkInUser = async (req, res) => {
 
     await User.findByIdAndUpdate(
       checkInUser._id,
-      { checkIn: true },
+      { checkIn: true, checkInTime: new Date() },
       { new: true }
     );
     res

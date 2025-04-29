@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    checkInTime: {
+      type: Date,
+      default: null,
+    },
     eventId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Events",
