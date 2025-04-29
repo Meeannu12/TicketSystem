@@ -280,6 +280,19 @@ const addUrl = async (req, res) => {
   }
 };
 
+const deleteUser = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const user = await User.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({ message: "user Not Found" });
+    }
+    res.status(200).json({ message: "User delete successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // const getAllUsers = async (req,res)=>{
 //   try {
 
@@ -306,4 +319,5 @@ module.exports = {
   getStatus,
   resendTicket,
   addUrl,
+  deleteUser,
 };

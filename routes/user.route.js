@@ -7,6 +7,7 @@ const {
   resendTicket,
   addUrl,
   getAllStudentByEvent,
+  deleteUser,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -30,11 +31,12 @@ userRoutes.get(
 );
 
 //get all student on every event
-userRoutes.get("/allStudent",authMiddleware, getAllStudents);
+userRoutes.get("/allStudent", authMiddleware, getAllStudents);
 // if again send ticket then use this api
 userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 // dummy api
 userRoutes.post("/addUrl/:id", addUrl);
+userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
 // crm data enter on google sheet
 
