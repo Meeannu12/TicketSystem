@@ -79,7 +79,31 @@ const loginAdmin = async (req, res) => {
   }
 };
 
+const getAllUser = async (req, res) => {
+  try {
+    const getUser = await Admin.find({});
+    res.status(200).json({ message: "get all User", user: getUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleteUser = await Admin.findByIdAndDelete(id);
+    if (!deleteUser) {
+      return res.status(404).json({ message: "user Not Found" });
+    }
+    res.status(200).json({ message: "User delete successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addAdmin,
   loginAdmin,
+  deleteUser,
+  getAllUser
 };
