@@ -82,7 +82,8 @@ const loginAdmin = async (req, res) => {
 const getAllUser = async (req, res) => {
   try {
     const getUser = await Admin.find({});
-    res.status(200).json({ message: "get all User", user: getUser });
+    const newUser = getUser.filter((user) => user.role == "user");
+    res.status(200).json({ message: "get all User", user: newUser });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -105,5 +106,5 @@ module.exports = {
   addAdmin,
   loginAdmin,
   deleteUser,
-  getAllUser
+  getAllUser,
 };
