@@ -1,9 +1,14 @@
 const express = require("express");
 const db = require("./config/db");
 const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+require("./auth/google"); // Passport config
 const adminRoute = require("./routes/admin.route");
 const eventRoute = require("./routes/event.routes");
 const userRoutes = require("./routes/user.route");
+require("dotenv").config();
+
 const fs = require("fs");
 const path = require("path");
 
@@ -63,6 +68,58 @@ app.get(`${api}`, (req, res) => {
 app.use(`${api}/admin`, adminRoute);
 app.use(`${api}/event`, eventRoute);
 app.use(`${api}/ticket`, userRoutes);
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get("/", (req, res) => {
+  res.send(`<a href="/auth/google">Login with Google</a>`);
+});
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/profile",
+    failureRedirect: "/",
+  })
+);
+
+// app.get("/profile", (req, res) => {
+//   if (!req.isAuthenticated()) return res.redirect("/");
+//   res.send(`Welcome ${req.user.displayName}`);
+// });
+
+app.get("/profile", (req, res) => {
+  if (!req.isAuthenticated()) return res.redirect("/");
+  res.send(`
+    <h1>Welcome ${req.user.displayName}</h1>
+    <a href="/logout">Logout</a>
+  `);
+});
+
+app.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy(); // clear session from server
+    res.clearCookie('connect.sid'); // Optional: clear session cookie
+    // req.session.destroy(); // Optional: destroy session on server
+    res.redirect("/"); // Redirect to homepage or login page
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
