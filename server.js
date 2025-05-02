@@ -84,7 +84,7 @@ app.get(`${api}`, (req, res) => {
 });
 
 app.get(
-  `/auth/google`,
+  `${api}/auth/google`,
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
