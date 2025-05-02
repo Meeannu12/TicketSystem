@@ -1,9 +1,6 @@
 const express = require("express");
 const db = require("./config/db");
 const cors = require("cors");
-const passport = require("passport");
-const session = require("express-session");
-require("./auth/google"); // Passport config
 const adminRoute = require("./routes/admin.route");
 const eventRoute = require("./routes/event.routes");
 const userRoutes = require("./routes/user.route");
@@ -62,61 +59,13 @@ app.get("/download/:filename", (req, res) => {
 
 const api = process.env.API;
 
-// app.get(`${api}`, (req, res) => {
-//   res.status(200).json({ message: "Api run successful" });
-// });
+app.get(`${api}`, (req, res) => {
+  res.status(200).json({ message: "Api run successful" });
+});
 app.use(`${api}/admin`, adminRoute);
 app.use(`${api}/event`, eventRoute);
 app.use(`${api}/ticket`, userRoutes);
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.get(`${api}`, (req, res) => {
-  // res.status(200).json({message:""})
-  res.send(`<a href= ${api}/auth/google >Login with Google</a>`);
-});
-
-app.get(
-  `${api}/auth/google`,
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-
-app.get(
-  `${api}/auth/google/callback`,
-  passport.authenticate("google", {
-    successRedirect: `${api}/profile`,
-    failureRedirect: `${api}/auth/google`,
-  })
-);
-
-app.get(`${api}/profile`, (req, res) => {
-  if (!req.isAuthenticated()) return res.redirect(`${api}/auth/google`);
-  console.log("user", req.user);
-  res.send(`
-    <h1>Welcome ${req.user.displayName}</h1>
-    <a href= ${api}/logout >Logout</a>
-  `);
-});
-
-app.get(`${api}/logout`, (req, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    req.session.destroy(); // clear session from server
-    res.clearCookie("connect.sid"); // Optional: clear session cookie
-    // res.redirect(`${api}`); // Redirect to homepage or login page
-    res.redirect("https://neet-exam-guidelines.vercel.app"); // Redirect to homepage or login page
-  });
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);

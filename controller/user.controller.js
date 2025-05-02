@@ -3,6 +3,8 @@ const generateTicketPDF = require("../config/pdfGenrator");
 const whatsappAPi = require("../config/whatsappAPI");
 const Event = require("../model/event");
 const User = require("../model/user");
+const UserEmail = require("../model/user.email");
+const jwt = require("jsonwebtoken");
 
 const addUser = async (req, res) => {
   try {
@@ -311,6 +313,27 @@ const deleteUser = async (req, res) => {
 //   }
 // };
 
+const checkEmail = async (req, res) => {
+  try {
+    // const { email } = req.body;
+    const { email } = req.query;
+    console.log("email", email);
+    const user = await UserEmail.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User Not found" });
+    }
+    const payload = {
+      id: user.id,
+    };
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    res.status(200).json({ message: "User found Successful", token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addUser,
   checkInUser,
@@ -320,4 +343,5 @@ module.exports = {
   resendTicket,
   addUrl,
   deleteUser,
+  checkEmail,
 };

@@ -8,6 +8,7 @@ const {
   addUrl,
   getAllStudentByEvent,
   deleteUser,
+  checkEmail,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -37,6 +38,9 @@ userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 // dummy api
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
+
+// emails servies here
+userRoutes.get("/checkEmail", checkEmail);
 
 // crm data enter on google sheet
 
