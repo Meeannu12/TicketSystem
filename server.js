@@ -84,12 +84,12 @@ app.get(`${api}`, (req, res) => {
 });
 
 app.get(
-  `${api}/auth/google`,
+  `/auth/google`,
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 app.get(
-  `https://vps.neetadvisor.in/api/v1/auth/google/callback`,
+  `${api}/auth/google/callback`,
   passport.authenticate("google", {
     successRedirect: `${api}/profile`,
     failureRedirect: "/",
