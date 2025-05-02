@@ -89,7 +89,7 @@ app.get(
 );
 
 app.get(
-  `${api}/auth/google/callback`,
+  `/auth/google/callback`,
   passport.authenticate("google", {
     successRedirect: `${api}/profile`,
     failureRedirect: "/",
