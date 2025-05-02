@@ -29,7 +29,7 @@ app.use(
     maxAge: 600, // Cache preflight requests
   })
 );
-
+app.enable("trust proxy"); // important!
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 db();
