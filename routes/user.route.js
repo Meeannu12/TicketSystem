@@ -9,6 +9,7 @@ const {
   getAllStudentByEvent,
   deleteUser,
   checkEmail,
+  addEmail,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -41,6 +42,7 @@ userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
 // emails servies here
 userRoutes.get("/checkEmail", checkEmail);
+userRoutes.post("/addEmail", addEmail)
 
 // crm data enter on google sheet
 

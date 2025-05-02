@@ -317,7 +317,7 @@ const checkEmail = async (req, res) => {
   try {
     // const { email } = req.body;
     const { email } = req.query;
-    console.log("email", email);
+    // console.log("email", email);
     const user = await UserEmail.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: "User Not found" });
@@ -334,6 +334,20 @@ const checkEmail = async (req, res) => {
   }
 };
 
+const addEmail = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "email is required" });
+    }
+    const user = new UserEmail({ email });
+    await user.save();
+    res.status(201).json({ message: "user save successful" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addUser,
   checkInUser,
@@ -344,4 +358,5 @@ module.exports = {
   addUrl,
   deleteUser,
   checkEmail,
+  addEmail
 };
