@@ -89,7 +89,7 @@ app.get(
 );
 
 app.get(
-  `/auth/google/callback`,
+  `https://vps.neetadvisor.in/api/v1/auth/google/callback`,
   passport.authenticate("google", {
     successRedirect: `${api}/profile`,
     failureRedirect: "/",
