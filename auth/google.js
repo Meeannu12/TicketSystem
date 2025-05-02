@@ -12,7 +12,7 @@ passport.use(
     },
     (accessToken, refreshToken, profile, done) => {
       // You can save user info to DB here
-      //   console.log("Google Profile:", profile);
+        console.log("Google Profile:", profile);
       return done(null, profile);
     }
   )

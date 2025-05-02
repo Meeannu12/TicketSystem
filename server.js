@@ -80,6 +80,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get(`${api}`, (req, res) => {
+  // res.status(200).json({message:""})
   res.send(`<a href= ${api}/auth/google >Login with Google</a>`);
 });
 
@@ -92,17 +93,13 @@ app.get(
   `${api}/auth/google/callback`,
   passport.authenticate("google", {
     successRedirect: `${api}/profile`,
-    failureRedirect: "/",
+    failureRedirect: `${api}/auth/google`,
   })
 );
 
-// app.get("/profile", (req, res) => {
-//   if (!req.isAuthenticated()) return res.redirect("/");
-//   res.send(`Welcome ${req.user.displayName}`);
-// });
-
 app.get(`${api}/profile`, (req, res) => {
-  if (!req.isAuthenticated()) return res.redirect("/");
+  if (!req.isAuthenticated()) return res.redirect(`${api}/auth/google`);
+  console.log("user", req.user);
   res.send(`
     <h1>Welcome ${req.user.displayName}</h1>
     <a href= ${api}/logout >Logout</a>
@@ -116,8 +113,8 @@ app.get(`${api}/logout`, (req, res, next) => {
     }
     req.session.destroy(); // clear session from server
     res.clearCookie("connect.sid"); // Optional: clear session cookie
-    // req.session.destroy(); // Optional: destroy session on server
-    res.redirect(`${api}`); // Redirect to homepage or login page
+    // res.redirect(`${api}`); // Redirect to homepage or login page
+    res.redirect("https://neet-exam-guidelines.vercel.app"); // Redirect to homepage or login page
   });
 });
 
