@@ -19,6 +19,7 @@ app.use(
       "http://localhost:5173",
       "https://event.neetadvisor.in",
       "http://192.168.0.26:5173",
+      "https://neet-exam-guidelines.vercel.app",
     ], // Include all frontend URLs
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -65,7 +66,6 @@ app.get(`${api}`, (req, res) => {
 app.use(`${api}/admin`, adminRoute);
 app.use(`${api}/event`, eventRoute);
 app.use(`${api}/ticket`, userRoutes);
-
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
