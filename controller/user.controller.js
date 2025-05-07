@@ -153,7 +153,7 @@ const checkInUser = async (req, res) => {
       {
         checkIn: true,
         checkInTime: new Date(),
-        member: member.length > 0 ? member : [],
+        member: member,
       },
       { new: true }
     );
