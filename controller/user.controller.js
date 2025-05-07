@@ -136,6 +136,7 @@ const getStatus = async (req, res) => {
 const checkInUser = async (req, res) => {
   try {
     const { id, member } = req.body;
+    console.log(id, member);
     const checkInUser = await User.findById(id);
     if (!checkInUser) {
       return res.status(404).json({ message: "User not found in Database" });
@@ -152,7 +153,7 @@ const checkInUser = async (req, res) => {
       {
         checkIn: true,
         checkInTime: new Date(),
-        member: Array.isArray(member) && member.length > 0 ? member : [],
+        member: member.length > 0 ? member : [],
       },
       { new: true }
     );
