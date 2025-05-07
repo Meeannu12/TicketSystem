@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema(
       ref: "Events",
       required: true,
     },
+    member: [String],
     url: String,
   },
   {

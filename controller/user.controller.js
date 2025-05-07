@@ -125,7 +125,7 @@ const getStatus = async (req, res) => {
     }
 
     res.status(200).json({
-      message: "user checkIn Status successfully",
+      message: "get checkIn Status successfully",
       user: checkInStatus,
     });
   } catch (error) {
@@ -135,7 +135,7 @@ const getStatus = async (req, res) => {
 
 const checkInUser = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id, member } = req.body;
     const checkInUser = await User.findById(id);
     if (!checkInUser) {
       return res.status(404).json({ message: "User not found in Database" });
@@ -149,7 +149,11 @@ const checkInUser = async (req, res) => {
 
     await User.findByIdAndUpdate(
       checkInUser._id,
-      { checkIn: true, checkInTime: new Date() },
+      {
+        checkIn: true,
+        checkInTime: new Date(),
+        member: Array.isArray(member) && member.length > 0 ? member : [],
+      },
       { new: true }
     );
     res
@@ -358,5 +362,5 @@ module.exports = {
   addUrl,
   deleteUser,
   checkEmail,
-  addEmail
+  addEmail,
 };

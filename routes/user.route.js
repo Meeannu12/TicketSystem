@@ -21,7 +21,7 @@ const userRoutes = express.Router();
 //create ticket api
 userRoutes.post("/createTicket/:id", addUser);
 // if add user id then user checkIn status Ture
-userRoutes.get("/checkInUser/:id", authMiddleware, checkInUser);
+userRoutes.post("/checkInUser", authMiddleware, checkInUser);
 //if enter userId on pramas then show user details
 userRoutes.get("/checkInStatus/:id", authMiddleware, getStatus);
 //get all student add on single event
@@ -42,7 +42,7 @@ userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
 // emails servies here
 userRoutes.get("/checkEmail", checkEmail);
-userRoutes.post("/addEmail", addEmail)
+userRoutes.post("/addEmail", addEmail);
 
 // crm data enter on google sheet
 
