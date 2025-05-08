@@ -10,6 +10,7 @@ const {
   deleteUser,
   checkEmail,
   addEmail,
+  getTicketByNumber,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -32,6 +33,9 @@ userRoutes.get(
   getAllStudentByEvent
 );
 
+// get Ticket by number and eventId
+userRoutes.post("/getTicketByNumber", getTicketByNumber);
+
 //get all student on every event
 userRoutes.get("/allStudent", authMiddleware, getAllStudents);
 // if again send ticket then use this api
@@ -40,7 +44,7 @@ userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
-// emails servies here
+// emails servies here other project run this only 2 api's
 userRoutes.get("/checkEmail", checkEmail);
 userRoutes.post("/addEmail", addEmail);
 

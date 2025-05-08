@@ -300,14 +300,27 @@ const deleteUser = async (req, res) => {
   }
 };
 
-// const getAllUsers = async (req,res)=>{
-//   try {
-
-//   } catch (error) {
-
-//   }
-// }
-
+const getTicketByNumber = async (req, res) => {
+  try {
+    const { eventId, number } = req.body;
+    if (!eventId || !number) {
+      return res.status(400).json({
+        error: "missing field required",
+        message: {
+          eventId: !eventId ? "eventId is required" : undefined,
+          number: !number ? "number is required" : undefined,
+        },
+      });
+    }
+    const newUser = await User.findOne({ eventId, number });
+    if (!newUser) {
+      return res.status(404).json({ message: "user not found in DB" });
+    }
+    res.status(200).json({ message: newUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // const resendAllTicket = async (req, res) => {
 //   const id = req.params.id;
 //   try {
@@ -318,6 +331,7 @@ const deleteUser = async (req, res) => {
 //   }
 // };
 
+// this both api are other project api's
 const checkEmail = async (req, res) => {
   try {
     // const { email } = req.body;
@@ -364,4 +378,5 @@ module.exports = {
   deleteUser,
   checkEmail,
   addEmail,
+  getTicketByNumber,
 };
