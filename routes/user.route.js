@@ -34,7 +34,7 @@ userRoutes.get(
 );
 
 // get Ticket by number and eventId
-userRoutes.post("/getTicketByNumber", getTicketByNumber);
+userRoutes.post("/getTicketByNumber", authMiddleware, getTicketByNumber);
 
 //get all student on every event
 userRoutes.get("/allStudent", authMiddleware, getAllStudents);

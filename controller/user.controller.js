@@ -312,7 +312,12 @@ const getTicketByNumber = async (req, res) => {
         },
       });
     }
-    const newUser = await User.findOne({ eventId, number });
+    const newUser = await User.findOne({ eventId, number })
+      .select("name checkIn eventId") // only select 'name', 'checkIn', and 'eventId' from user
+      .populate({
+        path: "eventId",
+        select: "eventName startDate startTime venue", // only select these fields from Event
+      });
     if (!newUser) {
       return res.status(404).json({ message: "user not found in DB" });
     }
