@@ -11,6 +11,7 @@ const {
   checkEmail,
   addEmail,
   getTicketByNumber,
+  directLogin,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -25,6 +26,8 @@ userRoutes.post("/createTicket/:id", addUser);
 userRoutes.post("/checkInUser", authMiddleware, checkInUser);
 //if enter userId on pramas then show user details
 userRoutes.get("/checkInStatus/:id", authMiddleware, getStatus);
+
+userRoutes.post("/directLogin/:id", authMiddleware, directLogin);
 //get all student add on single event
 userRoutes.get(
   "/allStudent/:id",
