@@ -26,9 +26,9 @@ const addUser = async (req, res) => {
     const newEvent = await Event.findById(id);
     const today = new Date();
     // console.log(today, "hell", newEvent.startDate);
-    if (newEvent.startDate < today) {
-      return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
-    }
+    // if (newEvent.startDate < today) {
+    //   return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
+    // }
 
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
@@ -186,9 +186,9 @@ const directLogin = async (req, res) => {
     const newEvent = await Event.findById(id);
     const today = new Date();
     // console.log(today, "hell", newEvent.startDate);
-    if (newEvent.startDate < today) {
-      return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
-    }
+    // if (newEvent.startDate < today) {
+    //   return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
+    // }
 
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
