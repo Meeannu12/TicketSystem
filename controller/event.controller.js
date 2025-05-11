@@ -153,10 +153,24 @@ const reUploadEventImageById = async (req, res) => {
   }
 };
 
+//get all event by admin
+const getAllEventByAdmin = async (req, res) => {
+  try {
+    const newEvent = await Event.find({});
+    res.status(200).json({
+      message: "get all Events",
+      event: newEvent,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addEvent,
   getEventById,
   getAllEvent,
   editEvent,
   reUploadEventImageById,
+  getAllEventByAdmin
 };

@@ -5,6 +5,7 @@ const {
   getAllEvent,
   editEvent,
   reUploadEventImageById,
+  getAllEventByAdmin,
 } = require("../controller/event.controller");
 const upload = require("../config/multer");
 const {
@@ -29,6 +30,12 @@ eventRoute.put(
   reUploadEventImageById
 );
 eventRoute.put("/editEvent", authMiddleware, adminMiddleware, editEvent);
+eventRoute.get(
+  "/getAllEventByAdmin",
+  authMiddleware,
+  adminMiddleware,
+  getAllEventByAdmin
+);
 eventRoute.get("/getEvent/:id", getEventById);
 eventRoute.get("/getEvent", getAllEvent);
 
