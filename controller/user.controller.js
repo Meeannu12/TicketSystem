@@ -268,12 +268,10 @@ const directLogin = async (req, res) => {
     const emaildata = await nodeEmailFunction(userData);
     const numberData = whatsappAPi(userData);
 
-    res
-      .status(201)
-      .json({
-        message: "Ticket create and checkIn successful",
-        user: newUser._id,
-      });
+    res.status(201).json({
+      message: "Ticket create and checkIn successful",
+      user: newUser._id,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -305,31 +303,97 @@ const getAllStudentByEvent = async (req, res) => {
 
 const getAllStudents = async (req, res) => {
   try {
-    const newUsers = await User.find({}).populate("eventId");
+    // const newUsers = await User.find({}).populate("eventId");
 
-    const checkInStudent = newUsers.filter((user) => user.checkIn);
+    // const checkInStudent = newUsers.filter((user) => user.checkIn);
+
+    // const eventId = await User.aggregate([
+    //   {
+    //     $group: {
+    //       _id: "$eventId",
+    //       totalStudents: { $sum: 1 },
+    //       checkInStudents: {
+    //         $sum: {
+    //           $cond: [{ $eq: ["$checkIn", true] }, 1, 0],
+    //         },
+    //       },
+    //     },
+    //   },
+    // ]);
+
+    // const eventId = await User.aggregate([
+    //   {
+    //     $project: {
+    //       eventId: 1,
+    //       checkIn: 1,
+    //       memberCount: {
+    //         $cond: {
+    //           if: { $gt: [{ $size: { $ifNull: ["$member", []] } }, 0] },
+    //           then: { $add: [{ $size: "$member" }, 1] },
+    //           else: 1,
+    //         },
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: "$eventId",
+    //       totalStudents: { $sum: 1 },
+    //       checkInStudents: {
+    //         $sum: {
+    //           $cond: [{ $eq: ["$checkIn", true] }, "$memberCount", 0],
+    //         },
+    //       },
+    //     },
+    //   },
+    // ]);
 
     const eventId = await User.aggregate([
       {
-        $group: {
-          _id: "$eventId",
-          totalStudents: { $sum: 1 },
-          checkInStudents: {
-            $sum: {
-              $cond: [{ $eq: ["$checkIn", true] }, 1, 0],
+        $project: {
+          eventId: 1,
+          checkIn: 1,
+          memberCount: {
+            $cond: {
+              if: {
+                $and: [
+                  { $eq: ["$checkIn", true] },
+                  { $gt: [{ $size: { $ifNull: ["$member", []] } }, 0] },
+                ],
+              },
+              then: { $add: [{ $size: "$member" }, 1] }, // members + user
+              else: {
+                $cond: {
+                  if: { $eq: ["$checkIn", true] },
+                  then: 1, // only user
+                  else: 0,
+                },
+              },
             },
           },
+          checkInFlag: {
+            $cond: [{ $eq: ["$checkIn", true] }, 1, 0],
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$eventId",
+          totalStudents: { $sum: 1 }, // all users
+          checkInStudents: { $sum: "$checkInFlag" }, // only check-in users
+          totalMember: { $sum: "$memberCount" }, // members + user, only for check-ins
         },
       },
     ]);
 
-    const results = {
-      totalStudents: newUsers.length,
-      events: eventId,
-      totalChackIn: checkInStudent.length,
-      // totalStudent: newUsers,
-    };
-    res.status(200).json({ message: "all students information", results });
+    // const results = {
+    //   // totalStudents: newUsers.length,
+    //   // totalChackIn: checkInStudent.length,
+    //   // totalStudent: newUsers,
+    // };
+    res
+      .status(200)
+      .json({ message: "all students information", events: eventId });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -429,15 +493,6 @@ const getTicketByNumber = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-// const resendAllTicket = async (req, res) => {
-//   const id = req.params.id;
-//   try {
-//     const allUser = await User.find({ eventId: id });
-
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// };
 
 // this both api are other project api's
 const checkEmail = async (req, res) => {
