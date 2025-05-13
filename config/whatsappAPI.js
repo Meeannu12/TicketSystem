@@ -26,4 +26,24 @@ async function whatsappAPi(data) {
   }
 }
 
-module.exports = whatsappAPi;
+async function confirmationMessage(data) {
+  try {
+    const response = await axios.post(process.env.WHATSAPP_API, {
+      type: "template",
+      templateId: "ticket_verification",
+      templateLanguage: "en",
+      templateArgs: [
+        data.eventName,
+        data.eventName,
+        data.count,
+        `*${data.name}*`,
+      ],
+      sender_phone: "7503236029",
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+module.exports = { whatsappAPi, confirmationMessage };

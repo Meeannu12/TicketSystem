@@ -1,6 +1,6 @@
 const { nodeEmailFunction } = require("../config/nodemailer");
 const generateTicketPDF = require("../config/pdfGenrator");
-const whatsappAPi = require("../config/whatsappAPI");
+const { whatsappAPi, confirmationMessage } = require("../config/whatsappAPI");
 const Event = require("../model/event");
 const User = require("../model/user");
 const UserEmail = require("../model/user.email");
@@ -136,7 +136,7 @@ const getStatus = async (req, res) => {
 const checkInUser = async (req, res) => {
   try {
     const { id, member } = req.body;
-    console.log(id, member);
+    // console.log(id, member);
     const checkInUser = await User.findById(id);
     if (!checkInUser) {
       return res.status(404).json({ message: "User not found in Database" });
@@ -148,7 +148,7 @@ const checkInUser = async (req, res) => {
         .json({ message: "user already checkedIn", user: checkInUser });
     }
 
-    await User.findByIdAndUpdate(
+    const newUser = await User.findByIdAndUpdate(
       checkInUser._id,
       {
         checkIn: true,
@@ -156,10 +156,20 @@ const checkInUser = async (req, res) => {
         member: member,
       },
       { new: true }
-    );
+    ).populate("eventId");
+
+    const data = {
+      eventName: newUser.eventId.eventName,
+      name: `${newUser.name}, ${newUser?.member}`,
+      count: newUser?.member?.length ? newUser.member.length + 1 : 1,
+      number: newUser.number,
+    };
+    confirmationMessage(data);
+
+    // console.log("checkIn User Data", newUser, whatsappresponse);
     res
       .status(200)
-      .json({ message: "user checkIn successfully", user: checkInUser });
+      .json({ message: "user checkIn successfully",});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

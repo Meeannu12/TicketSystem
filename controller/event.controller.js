@@ -166,11 +166,24 @@ const getAllEventByAdmin = async (req, res) => {
   }
 };
 
+// event delete by id
+const deleteEvent = async (req, res) => {
+  try {
+    const id = req.params;
+    console.log("eventId", id);
+    const newEvent = await Event.findByIdAndDelete(id);
+    res.status(200).json({ message: "Event deleted Successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addEvent,
   getEventById,
   getAllEvent,
   editEvent,
   reUploadEventImageById,
-  getAllEventByAdmin
+  getAllEventByAdmin,
+  deleteEvent,
 };
