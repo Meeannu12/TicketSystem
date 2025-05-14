@@ -169,7 +169,7 @@ const getAllEventByAdmin = async (req, res) => {
 // event delete by id
 const deleteEvent = async (req, res) => {
   try {
-    const id = req.params;
+    const id = req.params.id;
     console.log("eventId", id);
     const newEvent = await Event.findByIdAndDelete(id);
     res.status(200).json({ message: "Event deleted Successfully" });
