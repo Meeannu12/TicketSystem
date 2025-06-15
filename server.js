@@ -4,11 +4,11 @@ const cors = require("cors");
 const adminRoute = require("./routes/admin.route");
 const eventRoute = require("./routes/event.routes");
 const userRoutes = require("./routes/user.route");
-const XLSX = require("xlsx");
+// const XLSX = require("xlsx");
 const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
-const Events = require("./model/event");
+// const Events = require("./model/event");
 
 const app = express();
 require("dotenv").config();
@@ -68,37 +68,37 @@ app.use(`${api}/admin`, adminRoute);
 app.use(`${api}/event`, eventRoute);
 app.use(`${api}/ticket`, userRoutes);
 
-app.get("/downloadSheet/:id", async (req, res) => {
-  try {
-    const id = req.params.id;
-    const data = await Events.findById(id);
-    // Convert data to worksheet
-    const worksheet = XLSX.utils.json_to_sheet(data);
+// app.get("/downloadSheet/:id", async (req, res) => {
+//   try {
+//     const id = req.params.id;
+//     const data = await Events.findById(id);
+//     // Convert data to worksheet
+//     const worksheet = XLSX.utils.json_to_sheet(data);
 
-    // Create workbook and add the worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Attendees");
+//     // Create workbook and add the worksheet
+//     const workbook = XLSX.utils.book_new();
+//     XLSX.utils.book_append_sheet(workbook, worksheet, "Attendees");
 
-    // Define file path
-    const filePath = path.join(__dirname, "attendees.xlsx");
+//     // Define file path
+//     const filePath = path.join(__dirname, "attendees.xlsx");
 
-    // Write the Excel file
-    XLSX.writeFile(workbook, filePath);
+//     // Write the Excel file
+//     XLSX.writeFile(workbook, filePath);
 
-    // Send file to client
-    res.download(filePath, "attendees.xlsx", (err) => {
-      if (err) {
-        console.error("Download error", err);
-      } else {
-        // Delete file after download if needed
-        fs.unlinkSync(filePath);
-      }
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Something went wrong while exporting" });
-  }
-});
+//     // Send file to client
+//     res.download(filePath, "attendees.xlsx", (err) => {
+//       if (err) {
+//         console.error("Download error", err);
+//       } else {
+//         // Delete file after download if needed
+//         fs.unlinkSync(filePath);
+//       }
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Something went wrong while exporting" });
+//   }
+// });
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
