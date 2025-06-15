@@ -47,6 +47,7 @@ userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
+
 // emails servies here other project run this only 2 api's
 userRoutes.get("/checkEmail", checkEmail);
 userRoutes.post("/addEmail", addEmail);

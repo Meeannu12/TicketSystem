@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    bookingId: String,
+    // bookingId: String,
     email: {
       type: String,
       required: true,
@@ -30,6 +30,7 @@ const UserSchema = new mongoose.Schema(
   },
   {
     versionKey: false,
+    timestamps: true,
   }
 );
 
