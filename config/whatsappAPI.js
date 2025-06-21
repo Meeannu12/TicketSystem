@@ -46,4 +46,25 @@ async function confirmationMessage(data) {
   }
 }
 
-module.exports = { whatsappAPi, confirmationMessage };
+async function ZoomWhatsappApi(data) {
+  try {
+    const response = await axios.post(process.env.WHATSAPP_API, {
+      type: "richTemplate",
+      templateId: "webinar_registration_confirm2",
+      templateLanguage: "en",
+      templateArgs: [
+        data.firstName,
+        data.topic,
+        data.startDate,
+        data.webinarId,
+        data.join_url,
+      ],
+      sender_phone: data.phoneNumber,
+    });
+    return response.data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+module.exports = { whatsappAPi, confirmationMessage, ZoomWhatsappApi };

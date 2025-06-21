@@ -1,6 +1,8 @@
 const Admin = require("../model/admin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { registerToWebinar } = require("../config/zoomFunction");
+const { ZoomWhatsappApi } = require("../config/whatsappAPI");
 
 const addAdmin = async (req, res) => {
   try {
@@ -102,9 +104,62 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// create a zoom meet api's
+
+const zoomRegistration = async (req, res) => {
+  try {
+    const {
+      webinarId,
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      city,
+      state,
+      parentNumber,
+      registeredBy,
+    } = req.body;
+
+    const data = {
+      webinarId,
+      email,
+      firstName,
+      lastName,
+      phoneNumber,
+      city,
+      state,
+      parentNumber,
+      registeredBy,
+    };
+    // const ZoomAPI = await callZoomAPI(data);
+    const ZoomAPI = await registerToWebinar(data);
+    const start = new Date(ZoomAPI.start_time);
+
+    const startDate = start.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "short", // Jan, Feb, etc.
+      day: "2-digit", // 01, 02, ..., 31
+      hour: "2-digit", // 01, 02, ..., 12
+      minute: "2-digit", // 00, 15, 30, ...
+      hour12: true, // Shows AM/PM
+    });
+    // console.log("zoom Data", { ...ZoomAPI, ...data, startDate });
+
+    // console.log(startD);
+    const zoomData = { ...ZoomAPI, ...data, startDate };
+    const whatsAppApi = await ZoomWhatsappApi(zoomData);
+    // console.log("whatsapp response", whatsAppApi);
+    res.status(201).json({ message: "Your webinar seat is booked" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addAdmin,
   loginAdmin,
   deleteUser,
   getAllUser,
+  zoomRegistration,
 };
