@@ -89,7 +89,7 @@ const registerToWebinar = async (data) => {
       "Zoom registration error:",
       error.response?.data || error.message
     );
-    throw error;
+    return error;
   }
 };
 

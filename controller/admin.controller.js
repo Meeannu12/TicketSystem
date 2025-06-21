@@ -133,6 +133,12 @@ const zoomRegistration = async (req, res) => {
     };
     // const ZoomAPI = await callZoomAPI(data);
     const ZoomAPI = await registerToWebinar(data);
+    if (ZoomAPI.status == 429) {
+      return res
+        .status(429)
+        .json({ message: "You have exceeded the daily rate limit of (3)" });
+    }
+
     const start = new Date(ZoomAPI.start_time);
 
     const startDate = start.toLocaleString("en-IN", {
@@ -145,8 +151,6 @@ const zoomRegistration = async (req, res) => {
       hour12: true, // Shows AM/PM
     });
     // console.log("zoom Data", { ...ZoomAPI, ...data, startDate });
-
-    // console.log(startD);
     const zoomData = { ...ZoomAPI, ...data, startDate };
     const whatsAppApi = await ZoomWhatsappApi(zoomData);
     // console.log("whatsapp response", whatsAppApi);
