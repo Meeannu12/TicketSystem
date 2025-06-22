@@ -50,8 +50,7 @@ const getZoomToken = async () => {
 
 const registerToWebinar = async (data) => {
   const token = await getZoomToken();
-  console.log("token", token);
-
+  // console.log("token", token);
   const url = `https://api.zoom.us/v2/webinars/${data.webinarId}/registrants`;
   const webdata = {
     email: data.email,

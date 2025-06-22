@@ -143,16 +143,18 @@ const zoomRegistration = async (req, res) => {
 
     const startDate = start.toLocaleString("en-IN", {
       timeZone: "Asia/Kolkata",
-      year: "numeric",
-      month: "short", // Jan, Feb, etc.
-      day: "2-digit", // 01, 02, ..., 31
-      hour: "2-digit", // 01, 02, ..., 12
+      weekday: "long", // monday , tuesday
+      year: "numeric", // 2024, 2025....
+      month: "long", // Jan, Feb, etc.
+      day: "numeric", // 01, 02, ..., 31
+      hour: "numeric", // 01, 02, ..., 12
       minute: "2-digit", // 00, 15, 30, ...
       hour12: true, // Shows AM/PM
     });
+    // console.log("date", startDate);
     // console.log("zoom Data", { ...ZoomAPI, ...data, startDate });
     const zoomData = { ...ZoomAPI, ...data, startDate };
-    const whatsAppApi = await ZoomWhatsappApi(zoomData);
+    const whatsAppApi = ZoomWhatsappApi(zoomData);
     // console.log("whatsapp response", whatsAppApi);
     res.status(201).json({ message: "Your webinar seat is booked" });
   } catch (error) {
