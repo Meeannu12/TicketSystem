@@ -68,7 +68,7 @@ const registerToWebinar = async (data) => {
         value: data.parentNumber,
       },
       {
-        title: "Registration Done By",
+        title: "Registration Done by",
         value: data.registeredBy,
       },
     ],
