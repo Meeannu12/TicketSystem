@@ -167,5 +167,5 @@ module.exports = {
   loginAdmin,
   deleteUser,
   getAllUser,
-  zoomRegistration,
+  // zoomRegistration,
 };

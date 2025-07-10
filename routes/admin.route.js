@@ -23,6 +23,6 @@ adminRoute.delete(
 );
 
 // zoom api call here
-adminRoute.post("/zoomRegistration", zoomRegistration);
+// adminRoute.post("/zoomRegistration", zoomRegistration);
 
 module.exports = adminRoute;
