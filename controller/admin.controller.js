@@ -106,61 +106,61 @@ const deleteUser = async (req, res) => {
 
 // create a zoom meet api's
 
-const zoomRegistration = async (req, res) => {
-  try {
-    const {
-      webinarId,
-      email,
-      firstName,
-      lastName,
-      phoneNumber,
-      city,
-      state,
-      parentNumber,
-      registeredBy,
-    } = req.body;
+// const zoomRegistration = async (req, res) => {
+//   try {
+//     const {
+//       webinarId,
+//       email,
+//       firstName,
+//       lastName,
+//       phoneNumber,
+//       city,
+//       state,
+//       parentNumber,
+//       registeredBy,
+//     } = req.body;
 
-    const data = {
-      webinarId,
-      email,
-      firstName,
-      lastName,
-      phoneNumber,
-      city,
-      state,
-      parentNumber,
-      registeredBy,
-    };
-    // const ZoomAPI = await callZoomAPI(data);
-    const ZoomAPI = await registerToWebinar(data);
-    if (ZoomAPI.status == 429) {
-      return res
-        .status(429)
-        .json({ message: "You have exceeded the daily rate limit of (3)" });
-    }
+//     const data = {
+//       webinarId,
+//       email,
+//       firstName,
+//       lastName,
+//       phoneNumber,
+//       city,
+//       state,
+//       parentNumber,
+//       registeredBy,
+//     };
+//     // const ZoomAPI = await callZoomAPI(data);
+//     const ZoomAPI = await registerToWebinar(data);
+//     if (ZoomAPI.status == 429) {
+//       return res
+//         .status(429)
+//         .json({ message: "You have exceeded the daily rate limit of (3)" });
+//     }
 
-    const start = new Date(ZoomAPI.start_time);
+//     const start = new Date(ZoomAPI.start_time);
 
-    const startDate = start.toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      weekday: "long", // monday , tuesday
-      year: "numeric", // 2024, 2025....
-      month: "long", // Jan, Feb, etc.
-      day: "numeric", // 01, 02, ..., 31
-      hour: "numeric", // 01, 02, ..., 12
-      minute: "2-digit", // 00, 15, 30, ...
-      hour12: true, // Shows AM/PM
-    });
-    // console.log("date", startDate);
-    // console.log("zoom Data", { ...ZoomAPI, ...data, startDate });
-    const zoomData = { ...ZoomAPI, ...data, startDate };
-    const whatsAppApi = ZoomWhatsappApi(zoomData);
-    // console.log("whatsapp response", whatsAppApi);
-    res.status(201).json({ message: "Your webinar seat is booked" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+//     const startDate = start.toLocaleString("en-IN", {
+//       timeZone: "Asia/Kolkata",
+//       weekday: "long", // monday , tuesday
+//       year: "numeric", // 2024, 2025....
+//       month: "long", // Jan, Feb, etc.
+//       day: "numeric", // 01, 02, ..., 31
+//       hour: "numeric", // 01, 02, ..., 12
+//       minute: "2-digit", // 00, 15, 30, ...
+//       hour12: true, // Shows AM/PM
+//     });
+//     // console.log("date", startDate);
+//     // console.log("zoom Data", { ...ZoomAPI, ...data, startDate });
+//     const zoomData = { ...ZoomAPI, ...data, startDate };
+//     const whatsAppApi = ZoomWhatsappApi(zoomData);
+//     // console.log("whatsapp response", whatsAppApi);
+//     res.status(201).json({ message: "Your webinar seat is booked" });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 module.exports = {
   addAdmin,
