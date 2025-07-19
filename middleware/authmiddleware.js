@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const Admin = require("../model/admin");
 
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -22,8 +21,6 @@ const authMiddleware = async (req, res, next) => {
 };
 
 const adminMiddleware = async (req, res, next) => {
-  const id = req.user.staffRole;
-  // const newUser = await Admin.findById(id.id);
   if (req.user.staffRole !== 'admin') {
     return res.status(404).json({ message: "Admin not found" });
   }

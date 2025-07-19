@@ -8,6 +8,7 @@ const addEvent = async (req, res) => {
     startDate,
     startTime,
     endTime,
+    // endDate,
     venue,
     description,
     locationURL,
@@ -19,6 +20,7 @@ const addEvent = async (req, res) => {
       !startDate ||
       !startTime ||
       !endTime ||
+      // !endDate ||
       !venue ||
       !description ||
       !locationURL
@@ -33,6 +35,7 @@ const addEvent = async (req, res) => {
           startDate: !startDate ? "startDate is required" : undefined,
           startTime: !startTime ? "startTime is required" : undefined,
           endTime: !endTime ? "endTime is required" : undefined,
+          // endDate: !endDate ? "endDate is required" : undefined,
           description: !description ? "description is required" : undefined,
           venue: !venue ? "venue is required" : undefined,
           locationURL: !locationURL ? "locationURL is require" : undefined,
@@ -52,6 +55,7 @@ const addEvent = async (req, res) => {
       startDate,
       startTime,
       endTime,
+      // endDate,
       description,
       venue,
       imageURL: req.file.filename,
@@ -118,6 +122,7 @@ const editEvent = async (req, res) => {
     if (req.query.startDate) callData.startDate = req.query.startDate;
     if (req.query.startTime) callData.startTime = req.query.startTime;
     if (req.query.endTime) callData.endTime = req.query.endTime;
+    // if (req.query.endDate) callData.endDate = req.query.endDate;
     if (req.query.venue) callData.venue = req.query.venue;
     if (req.query.description) callData.description = req.query.description;
     if (req.query.locationURL) callData.locationURL = req.query.locationURL;

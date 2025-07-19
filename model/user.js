@@ -7,7 +7,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // bookingId: String,
     email: {
       type: String,
       required: true,
@@ -25,6 +24,7 @@ const UserSchema = new mongoose.Schema(
       ref: "Events",
       required: true,
     },
+    employeeId: String,
     member: [String],
     url: String,
   },
