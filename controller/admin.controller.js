@@ -61,7 +61,7 @@ const loginAdmin = async (req, res) => {
       employeeId,
       password,
     });
-    // console.log(response.data);
+    console.log(response.data);
 
     const verifyToken = jwt.verify(
       response.data.token,
@@ -75,8 +75,8 @@ const loginAdmin = async (req, res) => {
       staffId: verifyToken.staffId,
       staffRole: verifyToken.staffRole,
       staffAccess: verifyToken.staffAccess.ticketingSystem,
-      staff: "BhupenderTest",
-      employeeId: "123456",
+      staff: verifyToken.staff,
+      employeeId: verifyToken.employeeId,
     };
 
     console.log("payload", payload);
@@ -88,7 +88,7 @@ const loginAdmin = async (req, res) => {
     res.status(200).json({
       message: "login Successful",
       token,
-      role: response.data.role,
+      role: verifyToken.staffRole,
     });
   } catch (error) {
     res.status(500).json({ message: error.response.data.message });
