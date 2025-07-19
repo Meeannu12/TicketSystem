@@ -13,7 +13,7 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log("token verify", decoded);
+    console.log("token verify", decoded);
     req.user = decoded; // you can access user info in the next middleware or route
     next();
   } catch (err) {
@@ -22,9 +22,9 @@ const authMiddleware = async (req, res, next) => {
 };
 
 const adminMiddleware = async (req, res, next) => {
-  const id = req.user;
-  const newUser = await Admin.findById(id.id);
-  if (!newUser) {
+  const id = req.user.staffRole;
+  // const newUser = await Admin.findById(id.id);
+  if (req.user.staffRole !== 'admin') {
     return res.status(404).json({ message: "Admin not found" });
   }
   next();
