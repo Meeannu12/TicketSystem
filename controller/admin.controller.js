@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { registerToWebinar } = require("../config/zoomFunction");
 const { ZoomWhatsappApi } = require("../config/whatsappAPI");
+const { default: axios } = require("axios");
 
 const addAdmin = async (req, res) => {
   try {
@@ -45,39 +46,52 @@ const addAdmin = async (req, res) => {
 
 const loginAdmin = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
+    const { employeeId, password } = req.body;
+    if (!employeeId || !password) {
       return res.status(400).json({
         error: "missing fields required",
         message: {
-          email: !email ? "email is required" : undefined,
+          employeeId: !employeeId ? "employeeId is required" : undefined,
           password: !password ? "password is required" : undefined,
         },
       });
     }
-    const user = await Admin.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "Credentials incorrect" });
-    }
 
-    const compare = await bcrypt.compare(password, user.password);
-    if (!compare) {
-      return res.status(404).json({ message: "password is Incorrect" });
-    }
+    const response = await axios.post(process.env.LOGIN_API, {
+      employeeId,
+      password,
+    });
+    // console.log(response.data);
 
-    const payload = { id: user._id, role: user.role };
+    const verifyToken = jwt.verify(
+      response.data.token,
+      process.env.ZOOM_JWT_SECRET
+    );
+    // console.log(verifyToken);
+    if (verifyToken.staffAccess.ticketingSystem) {
+      return res.status(403).json({ message: "You are blocked by Admin" });
+    }
+    const payload = {
+      staffId: verifyToken.staffId,
+      staffRole: verifyToken.staffRole,
+      staffAccess: verifyToken.staffAccess.ticketingSystem,
+      staff: "BhupenderTest",
+      employeeId: "123456",
+    };
+
+    // console.log("payload", payload);
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "6h",
     });
 
-    res
-      .status(200)
-      .json({ message: "login Successful", token, role: user.role });
+    res.status(200).json({
+      message: "login Successful",
+      token,
+      role: response.data.role,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
+    res.status(500).json({ message: error.response.data.message });
   }
 };
 
