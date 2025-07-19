@@ -79,7 +79,7 @@ const loginAdmin = async (req, res) => {
       employeeId: "123456",
     };
 
-    // console.log("payload", payload);
+    console.log("payload", payload);
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "6h",
