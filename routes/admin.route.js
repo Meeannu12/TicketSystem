@@ -12,17 +12,17 @@ const {
 } = require("../middleware/authmiddleware");
 const adminRoute = express.Router();
 
-adminRoute.post("/register", authMiddleware, adminMiddleware, addAdmin);
+// adminRoute.post("/register", authMiddleware, adminMiddleware, addAdmin);
 adminRoute.post("/login", loginAdmin);
-adminRoute.get("/getUser", authMiddleware, adminMiddleware, getAllUser);
-adminRoute.delete(
-  "/deleteUser/:id",
-  authMiddleware,
-  adminMiddleware,
-  deleteUser
-);
+// adminRoute.get("/getUser", authMiddleware, adminMiddleware, getAllUser);
+// adminRoute.delete(
+//   "/deleteUser/:id",
+//   authMiddleware,
+//   adminMiddleware,
+//   deleteUser
+// );
 
 // zoom api call here
-adminRoute.post("/zoomRegistration", zoomRegistration);
+// adminRoute.post("/zoomRegistration", zoomRegistration);
 
 module.exports = adminRoute;

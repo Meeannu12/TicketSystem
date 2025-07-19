@@ -9,10 +9,10 @@ const addEvent = async (req, res) => {
     startTime,
     endTime,
     eventCourse,
-    // endDate,
     venue,
     description,
     locationURL,
+    // endDate,
   } = req.body;
   try {
     if (
