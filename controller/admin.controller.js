@@ -91,7 +91,14 @@ const loginAdmin = async (req, res) => {
       role: verifyToken.staffRole,
     });
   } catch (error) {
-    res.status(500).json({ message: error.response.data.message });
+    res
+      .status(500)
+      .json({
+        message:
+          error.response?.data?.message ||
+          error.message ||
+          "Internal Server Error",
+      });
   }
 };
 
