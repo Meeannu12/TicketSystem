@@ -21,7 +21,7 @@ const addUser = async (req, res) => {
         },
       });
     }
-
+ 
     // check current event is expair or not
     const newEvent = await Event.findById(id);
     const today = new Date();

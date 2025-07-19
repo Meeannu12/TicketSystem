@@ -10,6 +10,7 @@ const EventSchema = new mongoose.Schema(
     },
     startTime: String,
     endTime: String,
+    eventCourse: String,
     // endDate: {
     //   type: Date,
     //   required: true,
