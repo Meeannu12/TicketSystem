@@ -189,7 +189,7 @@ const deleteEvent = async (req, res) => {
 const getAllLiveEvent = async (req, res) => {
   // const course = req.params.course;
   try {
-    console.log("course", course);
+    // console.log("course", course);
     const events = await Event.find({}); // Fetch all
 
     const now = new Date();
