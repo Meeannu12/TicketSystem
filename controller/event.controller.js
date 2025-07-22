@@ -208,7 +208,7 @@ const getAllLiveEvent = async (req, res) => {
     // console.log("course", course);
     const now = new Date();
     const upcomingEvents = await Event.find({
-      startDateTime: { $gt: now },
+      startDate: { $gt: now },
     });
 
     res.status(200).json({ message: upcomingEvents });
