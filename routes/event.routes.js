@@ -7,6 +7,7 @@ const {
   reUploadEventImageById,
   getAllEventByAdmin,
   deleteEvent,
+  getAllLiveEvent,
 } = require("../controller/event.controller");
 const upload = require("../config/multer");
 const {
@@ -39,6 +40,8 @@ eventRoute.get(
 );
 eventRoute.get("/getEvent/:id", getEventById);
 eventRoute.get("/getEvent", getAllEvent);
+
+eventRoute.get("/getAllLiveEvent", getAllLiveEvent);
 
 //delete event by id
 eventRoute.delete(

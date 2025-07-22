@@ -185,6 +185,36 @@ const deleteEvent = async (req, res) => {
   }
 };
 
+// get All Live Event for staff and user
+const getAllLiveEvent = async (req, res) => {
+  // const course = req.params.course;
+  try {
+    console.log("course", course);
+    const events = await Event.find({}); // Fetch all
+
+    const now = new Date();
+
+    const upcomingEvents = events.filter((event) => {
+      const datePart = event.startDate.toISOString().split("T")[0]; // "2025-07-22"
+
+      // Combine date + time string to build a full DateTime string
+      const dateTimeString = `${datePart} ${event.startTime}`; // "2025-07-22 09:30 AM"
+
+      // Convert to actual Date object
+      const eventDateTime = new Date(dateTimeString);
+      console.log("eventTime", eventDateTime);
+      console.log("current Time", now);
+
+      return eventDateTime > now;
+    });
+
+    console.log(upcomingEvents);
+    res.status(200).json({ message: upcomingEvents });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   addEvent,
   getEventById,
@@ -193,4 +223,5 @@ module.exports = {
   reUploadEventImageById,
   getAllEventByAdmin,
   deleteEvent,
+  getAllLiveEvent,
 };
