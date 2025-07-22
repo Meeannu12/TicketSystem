@@ -51,10 +51,26 @@ const addEvent = async (req, res) => {
 
     console.log(req.file.filename);
 
+    // Combine:
+    const date = new Date(startDate);
+    const [time, modifier] = endTime.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+
+    if (modifier === "PM" && hours !== 12) hours += 12;
+    if (modifier === "AM" && hours === 12) hours = 0;
+
+    date.setHours(hours);
+    date.setMinutes(minutes);
+
+    // This is IST, so convert to UTC:
+    date.setMinutes(date.getMinutes() - 330); // IST = UTC +5:30
+
+    console.log("Store this UTC Date:", date.toISOString());
+
     let newEvent = new Event({
       eventName,
       eventShortName,
-      startDate,
+      startDate: date, // MongoDB will store it as ISODate
       startTime,
       endTime,
       eventCourse,
@@ -190,25 +206,11 @@ const getAllLiveEvent = async (req, res) => {
   // const course = req.params.course;
   try {
     // console.log("course", course);
-    const events = await Event.find({}); // Fetch all
-
     const now = new Date();
-
-    const upcomingEvents = events.filter((event) => {
-      const datePart = event.startDate.toISOString().split("T")[0]; // "2025-07-22"
-
-      // Combine date + time string to build a full DateTime string
-      const dateTimeString = `${datePart} ${event.startTime}`; // "2025-07-22 09:30 AM"
-
-      // Convert to actual Date object
-      const eventDateTime = new Date(dateTimeString);
-      console.log("eventTime", eventDateTime);
-      console.log("current Time", now);
-
-      return eventDateTime > now;
+    const upcomingEvents = await Events.find({
+      startDateTime: { $gt: now },
     });
 
-    console.log(upcomingEvents);
     res.status(200).json({ message: upcomingEvents });
   } catch (error) {
     res.status(500).json({ message: error.message });
