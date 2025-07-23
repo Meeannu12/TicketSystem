@@ -39,7 +39,7 @@ eventRoute.get(
   getAllEventByAdmin
 );
 eventRoute.get("/getEvent/:id", getEventById);
-eventRoute.get("/getEvent", getAllEvent);
+// eventRoute.get("/getEvent", getAllEvent);
 
 eventRoute.get("/getAllLiveEvent", getAllLiveEvent);
 
