@@ -10,12 +10,7 @@ const createQRCode = async (req, res) => {
 
     const qr = await QRCode.toDataURL(redirectUrl); // QR image in Base64
 
-    const urlDB = await Link.findByIdAndUpdate(
-      newLink._id,
-      { qr },
-      { new: true }
-    );
-    console.log("URL", urlDB);
+    await Link.findByIdAndUpdate(newLink._id, { qr }, { new: true });
 
     res.json({
       shortUrl: redirectUrl,
