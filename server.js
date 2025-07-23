@@ -7,6 +7,7 @@ const userRoutes = require("./routes/user.route");
 // const XLSX = require("xlsx");
 const fs = require("fs");
 const path = require("path");
+const linkRoute = require("./routes/link.route");
 require("dotenv").config();
 // const Events = require("./model/event");
 
@@ -68,6 +69,7 @@ app.get(`${api}`, (req, res) => {
 app.use(`${api}/admin`, adminRoute);
 app.use(`${api}/event`, eventRoute);
 app.use(`${api}/ticket`, userRoutes);
+app.use(`${api}/link`, linkRoute)
 
 // app.get("/downloadSheet/:id", async (req, res) => {
 //   try {
