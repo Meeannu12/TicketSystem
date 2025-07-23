@@ -155,7 +155,14 @@ const editEvent = async (req, res) => {
     }
     const callData = {};
 
-    if (req.query.startDate || req.query.startTime || req.query.endTime) {
+    const anyPresent =
+      req.query.startDate || req.query.startTime || req.query.endTime;
+
+    // Step 2: If any present BUT not all present → error
+    if (
+      anyPresent &&
+      (!req.query.startDate || !req.query.startTime || !req.query.endTime)
+    ) {
       return res.status(400).json({
         message: {
           startDate: !req.query.startDate ? "startDate is required" : undefined,
