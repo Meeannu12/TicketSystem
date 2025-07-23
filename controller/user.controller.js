@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 const addUser = async (req, res) => {
   try {
-    const { name, number, email } = req.body;
+    const { name, number, email, member } = req.body;
     const id = req.params.id;
     if (!name || !number || !email) {
       return res.status(400).json({
@@ -16,19 +16,22 @@ const addUser = async (req, res) => {
           name: !name ? "name is required" : undefined,
           number: !number ? "number is required" : undefined,
           email: !email ? "email is required" : undefined,
-          //   eventId: !eventId ? "eventId is required" : undefined,
         },
       });
     }
- 
+
     // check current event is expair or not
     const newEvent = await Event.findById(id);
-    const today = new Date();
-    // console.log(today, "hell", newEvent.startDate);
-    // if (newEvent.startDate < today) {
-    //   return res.status(200).json({ message: "Event is expired" }); // Checks if event has already started
-    // }
+    const currentDate = new Date();
 
+    // check if event not exist in db
+    if (!newEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    // check event is expired or not
+    if (currentDate > newEvent.startDate) {
+      return res.status(200).json({ message: "This event is expired" });
+    }
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
       number,
@@ -36,12 +39,21 @@ const addUser = async (req, res) => {
       eventId: id,
     });
 
+    // check if user already exist with the same event then return error
     if (existingUser) {
       return res.status(400).json({
         message: "You have already registered for this event.",
       });
     }
-    let newUser = new User({ name, number, email, eventId: id });
+
+
+    let newUser = new User({
+      name,
+      number,
+      email,
+      eventId: id,
+      member: member || [],
+    });
     newUser = await newUser.save();
 
     // Populate event info
@@ -106,69 +118,7 @@ const addUser = async (req, res) => {
     // console.log(error.message);
     res
       .status(500)
-      .json({ message: "Internal Server Error", error: error.message });
-  }
-};
-
-const getStatus = async (req, res) => {
-  try {
-    const id = req.params.id;
-    const checkInStatus = await User.findById(id)
-      .select("name checkIn eventId") // only select 'name', 'checkIn', and 'eventId' from user
-      .populate({
-        path: "eventId",
-        select: "eventName startDate startTime venue", // only select these fields from Event
-      });
-    if (!checkInStatus) {
-      return res.status(404).json({ message: "User not found in Database" });
-    }
-
-    res.status(200).json({
-      message: "User data fetch successfully",
-      user: checkInStatus,
-    });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const checkInUser = async (req, res) => {
-  try {
-    const { id, member } = req.body;
-    // console.log(id, member);
-    const checkInUser = await User.findById(id);
-    if (!checkInUser) {
-      return res.status(404).json({ message: "User not found in Database" });
-    }
-
-    if (checkInUser.checkIn) {
-      return res
-        .status(200)
-        .json({ message: "user already checkedIn", user: checkInUser });
-    }
-
-    const newUser = await User.findByIdAndUpdate(
-      checkInUser._id,
-      {
-        checkIn: true,
-        checkInTime: new Date(),
-        member: member,
-      },
-      { new: true }
-    ).populate("eventId");
-
-    const data = {
-      eventName: newUser.eventId.eventName,
-      name: `${newUser.name}, ${newUser?.member}`,
-      count: newUser?.member?.length ? newUser.member.length + 1 : 1,
-      number: newUser.number,
-    };
-    confirmationMessage(data);
-
-    // console.log("checkIn User Data", newUser, whatsappresponse);
-    res.status(200).json({ message: "user checkIn successfully" });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+      .json({ message: error.message });
   }
 };
 
@@ -191,11 +141,16 @@ const directLogin = async (req, res) => {
 
     // check current event is expair or not
     const newEvent = await Event.findById(id);
-    const today = new Date();
-    // console.log(today, "hell", newEvent.startDate);
-    // if (newEvent.startDate < today) {
-    //   return res.status(200).json({ message: "Event is expair" }); // Checks if event has already started
-    // }
+    const currentDate = new Date();
+
+    // check if event not exist in db
+    if (!newEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    // check event is expired or not
+    if (currentDate > newEvent.startDate) {
+      return res.status(200).json({ message: "This event is expired" });
+    }
 
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
@@ -279,6 +234,67 @@ const directLogin = async (req, res) => {
       message: "Ticket create and checkIn successful",
       user: newUser._id,
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const checkInStatus = await User.findById(id)
+      .select("name checkIn eventId member") // only select 'name', 'checkIn', and 'eventId' from user
+      .populate({
+        path: "eventId",
+        select: "eventName startDate startTime venue", // only select these fields from Event
+      });
+    if (!checkInStatus) {
+      return res.status(404).json({ message: "User not found in Database" });
+    }
+
+    res.status(200).json({
+      message: "User data fetch successfully",
+      user: checkInStatus,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const checkInUser = async (req, res) => {
+  try {
+    const { id, member } = req.body;
+    // console.log(id, member);
+    const checkInUser = await User.findById(id);
+    if (!checkInUser) {
+      return res.status(404).json({ message: "User not found in Database" });
+    }
+
+    if (checkInUser.checkIn) {
+      return res
+        .status(200)
+        .json({ message: "user already checkedIn", user: checkInUser });
+    }
+
+    const newUser = await User.findByIdAndUpdate(
+      checkInUser._id,
+      {
+        checkIn: true,
+        checkInTime: new Date(),
+        member: member,
+      },
+      { new: true }
+    ).populate("eventId");
+
+    const data = {
+      eventName: newUser.eventId.eventName,
+      name: `${newUser.name}, ${newUser?.member}`,
+      count: newUser?.member?.length ? newUser.member.length + 1 : 1,
+      number: newUser.number,
+    };
+    confirmationMessage(data);
+
+    res.status(200).json({ message: "user checkIn successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -500,7 +516,6 @@ const getTicketByNumber = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 module.exports = {
   addUser,
