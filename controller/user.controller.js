@@ -46,7 +46,6 @@ const addUser = async (req, res) => {
       });
     }
 
-
     let newUser = new User({
       name,
       number,
@@ -116,9 +115,7 @@ const addUser = async (req, res) => {
       .json({ message: "Ticket is generated successfully", user: newUser._id });
   } catch (error) {
     // console.log(error.message);
-    res
-      .status(500)
-      .json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -126,6 +123,8 @@ const directLogin = async (req, res) => {
   try {
     const { name, number, email, member } = req.body;
     const id = req.params.id;
+    const user = req.user;
+    console.log("user Details", user);
 
     if (!name || !number || !email) {
       return res.status(400).json({
@@ -170,6 +169,7 @@ const directLogin = async (req, res) => {
       email,
       eventId: id,
       checkIn: true,
+      employeeId: user.employeeId,
       checkInTime: new Date(),
       member: member || [],
     });
@@ -264,6 +264,8 @@ const getStatus = async (req, res) => {
 const checkInUser = async (req, res) => {
   try {
     const { id, member } = req.body;
+    const user = req.user;
+    console.log("user Details", user);
     // console.log(id, member);
     const checkInUser = await User.findById(id);
     if (!checkInUser) {
@@ -282,6 +284,7 @@ const checkInUser = async (req, res) => {
         checkIn: true,
         checkInTime: new Date(),
         member: member,
+        employeeId: user.employeeId,
       },
       { new: true }
     ).populate("eventId");
