@@ -47,6 +47,8 @@ const addAdmin = async (req, res) => {
 const loginAdmin = async (req, res) => {
   try {
     const { employeeId, password } = req.body;
+
+    console.log("Login Data", employeeId, password);
     if (!employeeId || !password) {
       return res.status(400).json({
         error: "missing fields required",
@@ -61,7 +63,7 @@ const loginAdmin = async (req, res) => {
       employeeId,
       password,
     });
-    console.log(response.data);
+    console.log(response.data, response);
 
     const verifyToken = jwt.verify(
       response.data.token,
@@ -91,14 +93,12 @@ const loginAdmin = async (req, res) => {
       role: verifyToken.staffRole,
     });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message:
-          error.response?.data?.message ||
-          error.message ||
-          "Internal Server Error",
-      });
+    res.status(500).json({
+      message:
+        error.response?.data?.message ||
+        error.message ||
+        "Internal Server Error",
+    });
   }
 };
 
