@@ -48,7 +48,7 @@ const loginAdmin = async (req, res) => {
   try {
     const { employeeId, password } = req.body;
 
-    console.log("Login Data", employeeId, password);
+    // console.log("Login Data", employeeId, password);
     if (!employeeId || !password) {
       return res.status(400).json({
         error: "missing fields required",
@@ -63,7 +63,7 @@ const loginAdmin = async (req, res) => {
       employeeId,
       password,
     });
-    console.log(response.data, response);
+    // console.log(response.data, response);
 
     const verifyToken = jwt.verify(
       response.data.token,
@@ -81,7 +81,7 @@ const loginAdmin = async (req, res) => {
       employeeId: verifyToken.employeeId,
     };
 
-    console.log("payload", payload);
+    // console.log("payload", payload);
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "6h",
