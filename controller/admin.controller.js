@@ -70,13 +70,12 @@ const loginAdmin = async (req, res) => {
       process.env.ZOOM_JWT_SECRET
     );
     // console.log(verifyToken);
-    if (verifyToken.staffAccess.ticketingSystem) {
+    if (verifyToken.staffAccess.ticketingSystem == "block") {
       return res.status(403).json({ message: "You are blocked by Admin" });
     }
     const payload = {
       staffId: verifyToken.staffId,
-      staffRole: verifyToken.staffRole,
-      staffAccess: verifyToken.staffAccess.ticketingSystem,
+      staffRole: verifyToken.staffAccess.ticketingSystem,
       staff: verifyToken.staff,
       employeeId: verifyToken.employeeId,
     };
