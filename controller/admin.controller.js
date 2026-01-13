@@ -75,7 +75,7 @@ const loginAdmin = async (req, res) => {
     }
     const payload = {
       staffId: verifyToken.staffId,
-      staffRole: verifyToken.staffAccess.ticketingSystem,
+      staffRole: verifyToken.staffRole == "admin" ? verifyToken.staffRole : verifyToken.staffAccess.ticketingSystem,
       staff: verifyToken.staff,
       employeeId: verifyToken.employeeId,
     };
