@@ -19,6 +19,16 @@ const dateConvertInUTC = (startDate, endTime) => {
   return date;
 };
 
+
+function capitalizeString(city) {
+  return String(city || "")
+    .toLowerCase()
+    .trim()
+    .split(/\s+/) // handle multiple spaces
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 // add New Event by admin only
 const addEvent = async (req, res) => {
   const {
@@ -98,7 +108,7 @@ const addEvent = async (req, res) => {
       endTime,
       eventCourse,
       description,
-      city: city.toLowerCase().trim(),
+      city: capitalizeString(city),
       venue,
       imageURL: req.file.filename,
       locationURL,
