@@ -16,6 +16,10 @@ const EventSchema = new mongoose.Schema(
     //   required: true,
     // },
     description: String,
+    city: {
+      type: String,
+      default: 'delhi'
+    },
     venue: String,
     locationURL: String,
     imageURL: String,

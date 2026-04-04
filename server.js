@@ -44,7 +44,7 @@ const uploadFolder = path.join(__dirname, "uploads");
 
 // Endpoint to check and download PDF
 app.get("/download/:filename", (req, res) => {
-  const filename = req.params.filename;
+  const filename = req.params.filename; 12
   const filePath = path.join(uploadFolder, `ticket_${filename}.pdf`);
 
   // Check if the file exists

@@ -28,6 +28,7 @@ const addEvent = async (req, res) => {
     startTime,
     endTime,
     eventCourse,
+    city,
     venue,
     description,
     locationURL,
@@ -39,6 +40,7 @@ const addEvent = async (req, res) => {
       !startDate ||
       !startTime ||
       !endTime ||
+      !city ||
       !eventCourse ||
       !venue ||
       !description ||
@@ -54,6 +56,7 @@ const addEvent = async (req, res) => {
           startDate: !startDate ? "startDate is required" : undefined,
           startTime: !startTime ? "startTime is required" : undefined,
           endTime: !endTime ? "endTime is required" : undefined,
+          city: !city ? "city is required" : undefined,
           eventCourse: !eventCourse ? "eventCourse is required" : undefined,
           description: !description ? "description is required" : undefined,
           venue: !venue ? "venue is required" : undefined,
@@ -95,6 +98,7 @@ const addEvent = async (req, res) => {
       endTime,
       eventCourse,
       description,
+      city: city.toLowerCase().trim(),
       venue,
       imageURL: req.file.filename,
       locationURL,
@@ -155,22 +159,22 @@ const editEvent = async (req, res) => {
     }
     const callData = {};
 
-    const anyPresent =
-      req.query.startDate || req.query.startTime || req.query.endTime;
+    // const anyPresent =
+    //   req.query.startDate || req.query.startTime || req.query.endTime;
 
-    // Step 2: If any present BUT not all present → error
-    if (
-      anyPresent &&
-      (!req.query.startDate || !req.query.startTime || !req.query.endTime)
-    ) {
-      return res.status(400).json({
-        message: {
-          startDate: !req.query.startDate ? "startDate is required" : undefined,
-          startTime: !req.query.startTime ? "startTime is required" : undefined,
-          endTime: !req.query.endTime ? "endTime is required" : undefined,
-        },
-      });
-    }
+    // // Step 2: If any present BUT not all present → error
+    // if (
+    //   anyPresent &&
+    //   (!req.query.startDate || !req.query.startTime || !req.query.endTime)
+    // ) {
+    //   return res.status(400).json({
+    //     message: {
+    //       startDate: !req.query.startDate ? "startDate is required" : undefined,
+    //       startTime: !req.query.startTime ? "startTime is required" : undefined,
+    //       endTime: !req.query.endTime ? "endTime is required" : undefined,
+    //     },
+    //   });
+    // }
     if (req.query.eventName) callData.eventName = req.query.eventName;
     if (req.query.eventShortName)
       callData.eventShortName = req.query.eventShortName;
@@ -236,8 +240,8 @@ const getAllEventByAdmin = async (req, res) => {
 const deleteEvent = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log("eventId", id);
-    const newEvent = await Event.findByIdAndDelete(id);
+    // console.log("eventId", id);
+    await Event.findByIdAndDelete(id);
     res.status(200).json({ message: "Event deleted Successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
