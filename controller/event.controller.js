@@ -201,6 +201,7 @@ const editEvent = async (req, res) => {
     if (req.query.venue) callData.venue = req.query.venue;
     if (req.query.description) callData.description = req.query.description;
     if (req.query.locationURL) callData.locationURL = req.query.locationURL;
+    if (req.query.city) callData.city = capitalizeString(req.query.city);
 
     await Event.updateOne(
       { _id: id }, // ID ya filter condition
