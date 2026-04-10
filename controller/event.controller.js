@@ -39,6 +39,9 @@ const addEvent = async (req, res) => {
     endTime,
     eventCourse,
     city,
+    ticketName,
+    longitude,
+    latitude,
     venue,
     description,
     locationURL,
@@ -51,6 +54,9 @@ const addEvent = async (req, res) => {
       !startTime ||
       !endTime ||
       !city ||
+      !ticketName ||
+      !longitude ||
+      !latitude ||
       !eventCourse ||
       !venue ||
       !description ||
@@ -67,6 +73,9 @@ const addEvent = async (req, res) => {
           startTime: !startTime ? "startTime is required" : undefined,
           endTime: !endTime ? "endTime is required" : undefined,
           city: !city ? "city is required" : undefined,
+          ticketName: !ticketName ? "ticketName is required" : undefined,
+          longitude: !longitude ? "longitude is required" : undefined,
+          latitude: !latitude ? "latitude is required" : undefined,
           eventCourse: !eventCourse ? "eventCourse is required" : undefined,
           description: !description ? "description is required" : undefined,
           venue: !venue ? "venue is required" : undefined,
@@ -109,6 +118,9 @@ const addEvent = async (req, res) => {
       eventCourse,
       description,
       city: capitalizeString(city),
+      ticketName,
+      longitude,
+      latitude,
       venue,
       imageURL: req.file.filename,
       locationURL,
@@ -194,6 +206,10 @@ const editEvent = async (req, res) => {
         req.query.endTime
       );
     }
+
+
+
+
     // callData.startDate = req.query.startDate;
     if (req.query.startTime) callData.startTime = req.query.startTime;
     if (req.query.endTime) callData.endTime = req.query.endTime;
@@ -202,6 +218,9 @@ const editEvent = async (req, res) => {
     if (req.query.description) callData.description = req.query.description;
     if (req.query.locationURL) callData.locationURL = req.query.locationURL;
     if (req.query.city) callData.city = capitalizeString(req.query.city);
+    if (req.query.ticketName) callData.ticketName = req.query.ticketName;
+    if (req.query.longitude) callData.longitude = req.query.longitude;
+    if (req.query.latitude) callData.latitude = req.query.latitude;
 
     await Event.updateOne(
       { _id: id }, // ID ya filter condition

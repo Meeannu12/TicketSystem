@@ -20,6 +20,18 @@ const EventSchema = new mongoose.Schema(
       type: String,
       default: 'delhi'
     },
+    ticketName: {
+      type: String,
+      default: 'Webinar Tickets'
+    },
+    longitude: {
+      type: String,
+      default: null
+    },
+    latitude: {
+      type: String,
+      default: null
+    },
     venue: String,
     locationURL: String,
     imageURL: String,
