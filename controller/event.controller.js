@@ -247,7 +247,7 @@ const reUploadEventImageById = async (req, res) => {
       { new: true }
     );
 
-    res.status(204).json({ message: "Image update successful", newImage });
+    res.status(201).json({ message: "Image update successful", newImage });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

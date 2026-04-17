@@ -77,6 +77,7 @@ const addUser = async (req, res) => {
       eventName: populatedUser.eventId.eventName,
       eventDate: `${startD} (${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
       eventShortName: populatedUser.eventId.eventShortName,
+      ticketName: populatedUser.eventId.ticketName,
       location: populatedUser.eventId.venue,
       locationURL: populatedUser.eventId.locationURL,
     };
@@ -96,6 +97,7 @@ const addUser = async (req, res) => {
       name: populatedUser.name,
       eventShortName: populatedUser.eventId.eventShortName,
       eventName: populatedUser.eventId.eventName,
+      ticketName: populatedUser.eventId.ticketName,
       startDate: `${formattedDate} ${populatedUser.eventId.startTime}`, //to ${populatedUser.eventId.endTime})`,
       venue: populatedUser.eventId.venue,
       link: URL.fileURL,

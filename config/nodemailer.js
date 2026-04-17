@@ -25,7 +25,7 @@ Thank you for showing interest with us!
 
 ⏰Your event registration for ${data.eventName} is Confirmed.
 
-✅ Topic- Attend INDIA'S Mega Event on ${data.eventShortName} 
+✅ Topic- ${data.ticketName} 
 
 🕦Date & Time:
 ${data.startDate}

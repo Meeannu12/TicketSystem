@@ -66,7 +66,7 @@ async function generateTicketPDF(data) {
   doc.fontSize(10);
 
   doc.font("Helvetica-Bold").text("Event Name:", { continued: true });
-  doc.font("Helvetica").text(`Attend INDIA'S Mega Event on ${data.eventShortName}`, {
+  doc.font("Helvetica").text(data.ticketName, {
     width: doc.page.width - 80,
     lineGap: 2,
   });
