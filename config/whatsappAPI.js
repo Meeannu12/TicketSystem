@@ -12,7 +12,6 @@ async function whatsappAPi(data) {
         `${data.link}`,
         `${data.name}`,
         `${data.ticketName}`,
-        // `${data.eventName}`,
         `${data.startDate}`,
         `${data.venue}`,
         `${data.link}`,
