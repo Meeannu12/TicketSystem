@@ -23,9 +23,13 @@ async function nodeEmailFunction(data) {
 
 Thank you for showing interest with us!
 
-⏰Your event registration for ${data.eventName} is Confirmed.
+⏰Your registration for ${data.eventName} is Confirmed.
 
 ✅ Topic- ${data.ticketName} 
+
+➡️Powered by the Team of Doctors & NEET Counselling Experts
+
+➡️In association with Manipal University College
 
 🕦Date & Time:
 ${data.startDate}
@@ -42,7 +46,7 @@ For any help, Call at 8587888229
 See you there!
 
 Regards
-NEET ADVISOR PVT. LTD.
+NEET ADVISOR
 🏆19+ Glorious Years of Excellence
 Mumbai | Delhi | India
 ☎8587888229`,

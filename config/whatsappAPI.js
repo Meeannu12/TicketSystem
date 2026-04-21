@@ -4,8 +4,8 @@ async function whatsappAPi(data) {
   // console.log("whatsappAPi", data);
   try {
     const response = await axios.post(process.env.WHATSAPP_API, {
-      type: "richTemplate",
-      templateId: "seminar_ug_25_dl", //templateId: "neet_expo_25"
+      type: "buttonTemplate",
+      templateId: "seminar_ug_26", //templateId: "neet_expo_25"
       templateLanguage: "en",
       file_name: `${data.name}`,
       templateArgs: [
