@@ -98,7 +98,7 @@ const addUser = async (req, res) => {
       eventShortName: populatedUser.eventId.eventShortName,
       eventName: populatedUser.eventId.eventName,
       ticketName: populatedUser.eventId.ticketName,
-      startDate: `${formattedDate} ${populatedUser.eventId.startTime}`, //to ${populatedUser.eventId.endTime})`,
+      startDate: `${formattedDate} \n ${populatedUser.eventId.startTime} - ${populatedUser.eventId.endTime})`,
       venue: populatedUser.eventId.venue,
       link: URL.fileURL,
     };
