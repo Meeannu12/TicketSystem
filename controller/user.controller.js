@@ -110,7 +110,11 @@ const addUser = async (req, res) => {
     );
 
     const emaildata = await nodeEmailFunction(userData);
-    const numberData = whatsappAPi(userData);
+    const numberData = await whatsappAPi(userData);
+
+    console.log('whatsapp response ', numberData)
+
+
 
     res
       .status(201)
