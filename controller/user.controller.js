@@ -121,7 +121,7 @@ const addUser = async (req, res) => {
   }
 };
 
-export const staffAddUser = async (req, res) => {
+const staffAddUser = async (req, res) => {
   try {
 
     // const employeeId = req.user
@@ -657,4 +657,5 @@ module.exports = {
   deleteUser,
   getTicketByNumber,
   directLogin,
+  staffAddUser
 };

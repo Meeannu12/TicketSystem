@@ -28,7 +28,7 @@ const adminMiddleware = async (req, res, next) => {
 };
 
 
-export const zoomToken = (req, res, next) => {
+const zoomToken = (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
   if (!token) {
     res.status(401).json({ error: "Unauthorized" });
@@ -47,4 +47,5 @@ export const zoomToken = (req, res, next) => {
 module.exports = {
   authMiddleware,
   adminMiddleware,
+  zoomToken
 };
