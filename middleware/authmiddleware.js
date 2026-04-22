@@ -12,7 +12,7 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("token verify", decoded);
+    // console.log("token verify", decoded);
     req.user = decoded; // you can access user info in the next middleware or route
     next();
   } catch (err) {
@@ -30,15 +30,12 @@ const adminMiddleware = async (req, res, next) => {
 
 const zoomToken = (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
-  if (!token) {
-    res.status(401).json({ error: "Unauthorized" });
-    return;
-  }
+  if (!token) return res.status(401).json({ message: "Access denied. No token provided." });
 
   try {
     const decoded = jwt.verify(token, process.env.ZOOM_SECRET);
     req.user = decoded;
-    console.log("decode token", decoded)
+    // console.log("decode token", decoded)
     next();
   } catch {
     res.status(401).json({ message: "Invalid token, Please Relogin" });

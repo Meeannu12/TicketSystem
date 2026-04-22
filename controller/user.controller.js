@@ -124,7 +124,7 @@ const addUser = async (req, res) => {
 const staffAddUser = async (req, res) => {
   try {
 
-    // const employeeId = req.user
+    const employeeId = req.user.employeeId
 
     const { name, number, email, leadSource, member } = req.body;
     const id = req.params.id;
@@ -171,7 +171,7 @@ const staffAddUser = async (req, res) => {
       number,
       email,
       eventId: id,
-      createBy,
+      createBy: employeeId,
       leadSource,
       member: member || [],
     });
