@@ -49,7 +49,7 @@ userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
-userRoutes.post('/staffAddUser/:id', zoomToken, staffAddUser)
+userRoutes.post('/staffCreateTicket/:id', zoomToken, staffAddUser)
 
 // crm data enter on google sheet
 
