@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
- 
+
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -27,6 +27,23 @@ const adminMiddleware = async (req, res, next) => {
   next();
 };
 
+
+export const zoomToken = (req, res, next) => {
+  const token = req.header("Authorization")?.split(" ")[1];
+  if (!token) {
+    res.status(401).json({ error: "Unauthorized" });
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ZOOM_SECRET);
+    req.user = decoded;
+    console.log("decode token", decoded)
+    next();
+  } catch {
+    res.status(401).json({ message: "Invalid token, Please Relogin" });
+  }
+};
 module.exports = {
   authMiddleware,
   adminMiddleware,

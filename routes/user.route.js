@@ -12,11 +12,13 @@ const {
   addEmail,
   getTicketByNumber,
   directLogin,
+  staffAddUser,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
   adminMiddleware,
   authMiddleware,
+  zoomToken,
 } = require("../middleware/authmiddleware");
 
 const userRoutes = express.Router();
@@ -46,6 +48,8 @@ userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 // dummy api
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
+
+userRoutes.post('/staffAddUser/:id', zoomToken, staffAddUser)
 
 // crm data enter on google sheet
 

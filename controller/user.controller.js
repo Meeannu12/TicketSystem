@@ -110,11 +110,7 @@ const addUser = async (req, res) => {
     );
 
     const emaildata = await nodeEmailFunction(userData);
-    const numberData = await whatsappAPi(userData);
-
-    console.log('whatsapp response ', numberData)
-
-
+    whatsappAPi(userData);
 
     res
       .status(201)
@@ -124,6 +120,130 @@ const addUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const staffAddUser = async (req, res) => {
+  try {
+
+    // const employeeId = req.user
+
+    const { name, number, email, leadSource, member } = req.body;
+    const id = req.params.id;
+    if (!name || !number || !email || !leadSource) {
+      return res.status(400).json({
+        error: "missing field require",
+        message: {
+          name: !name ? "name is required" : undefined,
+          number: !number ? "number is required" : undefined,
+          email: !email ? "email is required" : undefined,
+          leadSource: !leadSource ? "leadSource is required" : undefined,
+        },
+      });
+    }
+
+    const newEvent = await Event.findById(id);
+    const currentDate = new Date();
+
+    // check if event not exist in db
+    if (!newEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    // check event is expired or not
+    if (currentDate > newEvent.startDate) {
+      return res.status(200).json({ message: "This event is expired" });
+    }
+    // check if this event user already exist then throw error
+    const existingUser = await User.findOne({
+      number,
+      email,
+      eventId: id,
+    });
+
+    // check if user already exist with the same event then return error
+    if (existingUser) {
+      return res.status(400).json({
+        message: "You have already registered for this event.",
+      });
+    }
+
+
+    let newUser = new User({
+      name,
+      number,
+      email,
+      eventId: id,
+      createBy,
+      leadSource,
+      member: member || [],
+    });
+    newUser = await newUser.save();
+
+    // Populate event info
+    const populatedUser = await User.findById(newUser._id).populate("eventId");
+
+    const start = new Date(populatedUser.eventId.startDate);
+    const startD = start.toLocaleString("en-In", {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+
+    const date = new Date(start);
+
+    const formatted = new Intl.DateTimeFormat("en-CA").format(date);
+    const ticketData = {
+      req,
+      name: populatedUser.name,
+      bookingId: populatedUser._id.toString(),
+      bookingDate: Date.now(),
+      eventName: populatedUser.eventId.eventName,
+      eventDate: `${startD} (${populatedUser.eventId.startTime} to ${populatedUser.eventId.endTime})`,
+      eventShortName: populatedUser.eventId.eventShortName,
+      ticketName: populatedUser.eventId.ticketName,
+      location: populatedUser.eventId.venue,
+      locationURL: populatedUser.eventId.locationURL,
+    };
+
+    const URL = await generateTicketPDF(ticketData);
+    // console.log("URL", URL);
+
+    const formattedDate = new Date(formatted).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const userData = {
+      gmail: populatedUser.email,
+      number: populatedUser.number,
+      name: populatedUser.name,
+      eventShortName: populatedUser.eventId.eventShortName,
+      eventName: populatedUser.eventId.eventName,
+      ticketName: populatedUser.eventId.ticketName,
+      startDate: `${formattedDate}, ${populatedUser.eventId.startTime} - ${populatedUser.eventId.endTime}`,
+      venue: populatedUser.eventId.venue,
+      link: URL.fileURL,
+    };
+
+    await User.findByIdAndUpdate(
+      newUser._id,
+      { url: URL.fileURL },
+      { new: true }
+    );
+
+    const emaildata = await nodeEmailFunction(userData);
+    whatsappAPi(userData);
+
+
+    res
+      .status(201)
+      .json({ message: "Ticket is generated successfully", user: newUser._id });
+
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
 
 const directLogin = async (req, res) => {
   try {

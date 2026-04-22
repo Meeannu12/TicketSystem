@@ -24,6 +24,7 @@ app.use(
       "https://neet-exam-guidelines.vercel.app",
       "https://webinar-registration-puce.vercel.app",
       "https://expo.neetadvisor.in",
+      "https://lms.neetadvisor.in"
     ], // Include all frontend URLs
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
