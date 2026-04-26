@@ -7,15 +7,16 @@ const jwt = require("jsonwebtoken");
 
 const addUser = async (req, res) => {
   try {
-    const { name, number, email, member } = req.body;
+    const { name, number, email, member, appearing } = req.body;
     const id = req.params.id;
-    if (!name || !number || !email) {
+    if (!name || !number || !email || !appearing) {
       return res.status(400).json({
         error: "missing field require",
         message: {
           name: !name ? "name is required" : undefined,
           number: !number ? "number is required" : undefined,
           email: !email ? "email is required" : undefined,
+          appearing: !appearing ? "appearing is required" : undefined,
         },
       });
     }
@@ -52,7 +53,9 @@ const addUser = async (req, res) => {
       email,
       eventId: id,
       member: member || [],
+      appearing,
     });
+
     newUser = await newUser.save();
 
     // Populate event info
@@ -126,9 +129,9 @@ const staffAddUser = async (req, res) => {
 
     const employeeId = req.user.employeeId
 
-    const { name, number, email, leadSource, member } = req.body;
+    const { name, number, email, leadSource, member, appearing } = req.body;
     const id = req.params.id;
-    if (!name || !number || !email || !leadSource) {
+    if (!name || !number || !email || !leadSource || !appearing) {
       return res.status(400).json({
         error: "missing field require",
         message: {
@@ -136,6 +139,7 @@ const staffAddUser = async (req, res) => {
           number: !number ? "number is required" : undefined,
           email: !email ? "email is required" : undefined,
           leadSource: !leadSource ? "leadSource is required" : undefined,
+          appearing: !appearing ? "appearing is required" : undefined,
         },
       });
     }
@@ -172,9 +176,11 @@ const staffAddUser = async (req, res) => {
       email,
       eventId: id,
       createBy: employeeId,
+      appearing,
       leadSource,
       member: member || [],
     });
+
     newUser = await newUser.save();
 
     // Populate event info
@@ -364,6 +370,8 @@ const directLogin = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+
 
 const getStatus = async (req, res) => {
   try {
