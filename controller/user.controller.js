@@ -383,6 +383,7 @@ const getListbyStaff = async (req, res) => {
     console.log('check user details', user)
 
     const staffCondition = user.staffRole === "admin" ? { eventId: event } : { eventId: event, employeeId: user.employeeId }
+    console.log('get what condition is create', staffCondition)
     const staffLead = await User.find(staffCondition).skip(skip).limit(limit)
     const staffLeadCount = await User.countDocuments(staffCondition)
 
