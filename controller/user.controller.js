@@ -380,16 +380,6 @@ const getListbyStaff = async (req, res) => {
     const event = req.params.event
     const user = req.user
 
-    // let staffLead
-    // let staffLeadCount
-    // if (user.staffRole === "admin") {
-    //   staffLead = await User.find({ eventId: event }).skip(skip).limit(limit)
-    //   staffLeadCount = await User.countDocuments({ eventId: event })
-    // } else {
-
-    //   staffLead = await User.find({ eventId: event, employeeId: user.employeeId }).skip(skip).limit(limit)
-    //   staffLeadCount = await User.countDocuments({ eventId: event, employeeId: user.employeeId })
-    // }
     const staffCondition = user.staffRole === "admin" ? { eventId: event } : { eventId: event, employeeId: user.employeeId }
     const staffLead = await User.find(staffCondition).skip(skip).limit(limit)
     const staffLeadCount = await User.countDocuments(staffCondition)
@@ -404,7 +394,7 @@ const getListbyStaff = async (req, res) => {
       },
     };
 
-    res.status(200).json({ success: true, message: response })
+    res.status(200).json({ success: true, message: 'get lead by event', response })
 
 
   } catch (error) {
