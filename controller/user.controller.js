@@ -371,7 +371,46 @@ const directLogin = async (req, res) => {
   }
 };
 
+const getListbyStaff = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page || 1)
+    const limit = parseInt(req.query.limit || 100)
+    const skip = (page - 1) * limit
 
+    const event = req.params.event
+    const user = req.user
+
+    // let staffLead
+    // let staffLeadCount
+    // if (user.staffRole === "admin") {
+    //   staffLead = await User.find({ eventId: event }).skip(skip).limit(limit)
+    //   staffLeadCount = await User.countDocuments({ eventId: event })
+    // } else {
+
+    //   staffLead = await User.find({ eventId: event, employeeId: user.employeeId }).skip(skip).limit(limit)
+    //   staffLeadCount = await User.countDocuments({ eventId: event, employeeId: user.employeeId })
+    // }
+    const staffCondition = user.staffRole === "admin" ? { eventId: event } : { eventId: event, employeeId: user.employeeId }
+    const staffLead = await User.find(staffCondition).skip(skip).limit(limit)
+    const staffLeadCount = await User.countDocuments(staffCondition)
+
+    const response = {
+      staffLead,
+      pagination: {
+        page,
+        limit,
+        totalPages: Math.ceil(staffLeadCount / limit),
+        totalItems: staffLeadCount,
+      },
+    };
+
+    res.status(200).json({ success: true, message: response })
+
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
 
 const getStatus = async (req, res) => {
   try {
@@ -665,5 +704,6 @@ module.exports = {
   deleteUser,
   getTicketByNumber,
   directLogin,
-  staffAddUser
+  staffAddUser,
+  getListbyStaff
 };

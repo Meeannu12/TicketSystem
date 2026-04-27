@@ -8,11 +8,12 @@ const {
   addUrl,
   getAllStudentByEvent,
   deleteUser,
-  checkEmail,
-  addEmail,
+  // checkEmail,
+  // addEmail,
   getTicketByNumber,
   directLogin,
   staffAddUser,
+  getListbyStaff,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -49,7 +50,12 @@ userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 
+// create new seminar ticket by staff 
 userRoutes.post('/staffCreateTicket/:id', zoomToken, staffAddUser)
+
+// get event lead list create for both staff and admin
+userRoutes.get('/getEventListByStaff/:event', zoomToken, getListbyStaff)
+
 
 // crm data enter on google sheet
 
