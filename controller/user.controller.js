@@ -253,19 +253,19 @@ const staffAddUser = async (req, res) => {
 
 const directLogin = async (req, res) => {
   try {
-    const { name, number, email, member } = req.body;
+    const { name, number, email, member, appearing } = req.body;
     const id = req.params.id;
     const user = req.user;
-    console.log("user Details", user);
+    // console.log("user Details", user);
 
-    if (!name || !number || !email) {
+    if (!name || !number || !email || !appearing) {
       return res.status(400).json({
         error: "missing field require",
         message: {
           name: !name ? "name is required" : undefined,
           number: !number ? "number is required" : undefined,
           email: !email ? "email is required" : undefined,
-          //   eventId: !eventId ? "eventId is required" : undefined,
+          appearing: !appearing ? "appearing is required" : undefined,
         },
       });
     }
@@ -302,6 +302,8 @@ const directLogin = async (req, res) => {
       eventId: id,
       checkIn: true,
       employeeId: user.employeeId,
+      appearing,
+      createBy: 'direct',
       checkInTime: new Date(),
       member: member || [],
     });
