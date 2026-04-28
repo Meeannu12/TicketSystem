@@ -237,7 +237,7 @@ const staffAddUser = async (req, res) => {
       { new: true }
     );
 
-    const emaildata = await nodeEmailFunction(userData);
+    // const emaildata = await nodeEmailFunction(userData);
     whatsappAPi(userData);
 
 
@@ -371,6 +371,7 @@ const directLogin = async (req, res) => {
   }
 };
 
+// register user for event get by eventId and staff wise or admin wise
 const getListbyStaff = async (req, res) => {
   try {
     const page = parseInt(req.query.page || 1)
