@@ -14,6 +14,7 @@ const {
   directLogin,
   staffAddUser,
   getListbyStaff,
+  updateUserFollowNumber,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -55,6 +56,9 @@ userRoutes.post('/staffCreateTicket/:id', zoomToken, staffAddUser)
 
 // get event lead list create for both staff and admin
 userRoutes.get('/getEventListByStaff', zoomToken, getListbyStaff)
+
+
+userRoutes.put('/updateFollowUser/:id', zoomToken, updateUserFollowNumber)
 
 
 // crm data enter on google sheet

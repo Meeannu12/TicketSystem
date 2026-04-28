@@ -708,6 +708,29 @@ const getTicketByNumber = async (req, res) => {
   }
 };
 
+
+const updateUserFollowNumber = async (req, res) => {
+  const id = req.params.id
+  const number = req.query.number
+  try {
+    if (!number) return res.status(400).json({ success: false, message: 'number is required' })
+
+    const updateUser = await User.findByIdAndUpdate(id, { follow_up: number }, { new: true })
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(201).json({ success: true, message: 'number update successful' })
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 module.exports = {
   addUser,
   checkInUser,
@@ -720,5 +743,6 @@ module.exports = {
   getTicketByNumber,
   directLogin,
   staffAddUser,
-  getListbyStaff
+  getListbyStaff,
+  updateUserFollowNumber
 };
