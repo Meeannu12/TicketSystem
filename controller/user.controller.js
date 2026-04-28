@@ -711,9 +711,9 @@ const getTicketByNumber = async (req, res) => {
 
 const updateUserFollowNumber = async (req, res) => {
   const id = req.params.id
-  const number = req.query.number
+  // const number = req.query.number
   try {
-    if (!number) return res.status(400).json({ success: false, message: 'number is required' })
+    if (!req.body.number) return res.status(400).json({ success: false, message: 'number is required' })
 
     const updateUser = await User.findByIdAndUpdate(id, { follow_up: number }, { new: true })
 
