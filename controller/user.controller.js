@@ -717,14 +717,9 @@ const updateUserFollowNumber = async (req, res) => {
 
     const updateUser = await User.findByIdAndUpdate(id, { follow_up: number }, { new: true })
 
-    if (!updatedUser) {
-      return res.status(404).json({
-        success: false,
-        message: "User not found"
-      });
-    }
+    if (!updateUser) return res.status(404).json({ success: false, message: "User not found" });
 
-    res.status(201).json({ success: true, message: 'number update successful' })
+    res.status(200).json({ success: true, message: 'number update successful' })
 
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
