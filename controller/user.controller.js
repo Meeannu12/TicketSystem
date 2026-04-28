@@ -380,12 +380,31 @@ const getListbyStaff = async (req, res) => {
     const limit = parseInt(req.query.limit || 100)
     const skip = (page - 1) * limit
 
-    const event = req.params.event
+    // const event = req.params.event
+    const event = req.query.eventId
     const user = req.user
 
     // console.log('check user details', user)
 
-    const staffCondition = user.staffRole === "admin" ? { eventId: event } : { eventId: event, createBy: user.employeeId }
+    let staffCondition
+
+    if (user.staffRole === "admin") {
+
+      if (event) {
+        staffCondition = { eventId: event }
+      } else {
+        staffCondition = {}
+      }
+
+    } else {
+      if (event) {
+        staffCondition = { eventId: event, createBy: user.employeeId }
+      } else {
+        staffCondition = { createBy: user.employeeId }
+      }
+    }
+
+    // const staffCondition = user.staffRole === "admin" ? { eventId: event } : { eventId: event, createBy: user.employeeId }
     // console.log('get what condition is create', staffCondition)
     const staffLead = await User.find(staffCondition).skip(skip).limit(limit)
     const staffLeadCount = await User.countDocuments(staffCondition)

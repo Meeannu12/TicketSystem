@@ -54,7 +54,7 @@ userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
 userRoutes.post('/staffCreateTicket/:id', zoomToken, staffAddUser)
 
 // get event lead list create for both staff and admin
-userRoutes.get('/getEventListByStaff/:event', zoomToken, getListbyStaff)
+userRoutes.get('/getEventListByStaff', zoomToken, getListbyStaff)
 
 
 // crm data enter on google sheet
