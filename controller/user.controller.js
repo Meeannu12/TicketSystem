@@ -451,10 +451,12 @@ const getStatus = async (req, res) => {
 
 const checkInUser = async (req, res) => {
   try {
-    const { id, member } = req.body;
+    const { id, member, appearing } = req.body;
     const user = req.user;
-    console.log("user Details", user);
+    // console.log("user Details", user);
     // console.log(id, member);
+    if (!appearing) return res.status(400).json({ success: false, message: 'appearing is required' })
+
     const checkInUser = await User.findById(id);
     if (!checkInUser) {
       return res.status(404).json({ message: "User not found in Database" });
@@ -472,6 +474,7 @@ const checkInUser = async (req, res) => {
         checkIn: true,
         checkInTime: new Date(),
         member: member,
+        appearing: appearing,
         employeeId: user.employeeId,
       },
       { new: true }
@@ -485,9 +488,9 @@ const checkInUser = async (req, res) => {
     };
     confirmationMessage(data);
 
-    res.status(200).json({ message: "user checkIn successfully" });
+    res.status(200).json({ success: true, message: "user checkIn successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
