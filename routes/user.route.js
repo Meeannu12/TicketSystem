@@ -46,7 +46,7 @@ userRoutes.post("/getTicketByNumber", authMiddleware, getTicketByNumber);
 //get all student on every event
 userRoutes.get("/allStudent", authMiddleware, getAllStudents);
 // if again send ticket then use this api
-userRoutes.get("/resendTicket/:id", authMiddleware, resendTicket);
+userRoutes.get("/resendTicket/:id", resendTicket);
 // dummy api
 userRoutes.post("/addUrl/:id", addUrl);
 userRoutes.delete("/deleteStudent/:id", authMiddleware, deleteUser);
