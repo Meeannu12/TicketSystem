@@ -711,7 +711,6 @@ const getTicketByNumber = async (req, res) => {
   }
 };
 
-
 const updateUserFollowNumber = async (req, res) => {
   const id = req.params.id
   const { number } = req.body

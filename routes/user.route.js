@@ -22,6 +22,7 @@ const {
   authMiddleware,
   zoomToken,
 } = require("../middleware/authmiddleware");
+const { startResend, getJobStatus } = require("../controller/resend.controller");
 
 const userRoutes = express.Router();
 //create ticket api
@@ -59,6 +60,10 @@ userRoutes.get('/getEventListByStaff', zoomToken, getListbyStaff)
 
 
 userRoutes.put('/updateFollowUser/:id', zoomToken, updateUserFollowNumber)
+
+userRoutes.post('/startresend', startResend)
+
+userRoutes.get('/getJobStatus/:jobId', getJobStatus)
 
 
 // crm data enter on google sheet
