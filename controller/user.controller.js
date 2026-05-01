@@ -431,7 +431,7 @@ const getStatus = async (req, res) => {
   try {
     const id = req.params.id;
     const checkInStatus = await User.findById(id)
-      .select("name checkIn eventId member") // only select 'name', 'checkIn', and 'eventId' from user
+      .select("name checkIn eventId member appearing") // only select 'name', 'checkIn', and 'eventId' from user
       .populate({
         path: "eventId",
         select: "eventName startDate startTime venue", // only select these fields from Event
