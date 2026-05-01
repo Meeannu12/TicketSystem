@@ -52,6 +52,7 @@ const addUser = async (req, res) => {
       number,
       email,
       eventId: id,
+      createBy: 'self',
       member: member || [],
       appearing,
     });
