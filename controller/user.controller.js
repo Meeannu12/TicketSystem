@@ -430,15 +430,17 @@ const getListbyStaff = async (req, res) => {
 const getStatus = async (req, res) => {
   try {
     const id = req.params.id;
-    const checkInStatus = await User.findById(id)
+    const eventId = req.query.eventId
+
+    if (!eventId) return res.status(400).json({ success: false, message: 'eventId is required in query' })
+    const checkInStatus = await User.findOne({ _id: id, eventId })
       .select("name checkIn eventId member appearing") // only select 'name', 'checkIn', and 'eventId' from user
       .populate({
         path: "eventId",
         select: "eventName startDate startTime venue", // only select these fields from Event
       });
-    if (!checkInStatus) {
-      return res.status(404).json({ message: "User not found in Database" });
-    }
+    if (!checkInStatus) return res.status(404).json({ message: "User not found in this Event" });
+
 
     res.status(200).json({
       message: "User data fetch successfully",
@@ -458,9 +460,7 @@ const checkInUser = async (req, res) => {
     if (!appearing) return res.status(400).json({ success: false, message: 'appearing is required' })
 
     const checkInUser = await User.findById(id);
-    if (!checkInUser) {
-      return res.status(404).json({ message: "User not found in Database" });
-    }
+    if (!checkInUser) return res.status(404).json({ message: "User not found in Database" });
 
     if (checkInUser.checkIn) {
       return res
@@ -697,17 +697,15 @@ const getTicketByNumber = async (req, res) => {
       });
     }
     const newUser = await User.findOne({ eventId, number })
-      .select("name checkIn eventId") // only select 'name', 'checkIn', and 'eventId' from user
+      .select("name checkIn eventId member appearing") // only select 'name', 'checkIn', and 'eventId' from user
       .populate({
         path: "eventId",
         select: "eventName startDate startTime venue", // only select these fields from Event
       });
-    if (!newUser) {
-      return res.status(404).json({ message: "user not found in DB" });
-    }
-    res.status(200).json({ message: newUser });
+    if (!newUser) return res.status(404).json({ success: false, message: "user not found in this event" });
+    res.status(200).json({ success: true, message: newUser });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
