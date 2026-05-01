@@ -430,10 +430,11 @@ const getListbyStaff = async (req, res) => {
 const getStatus = async (req, res) => {
   try {
     const id = req.params.id;
-    const eventId = req.query.eventId
+    // const eventId = req.query.eventId
 
-    if (!eventId) return res.status(400).json({ success: false, message: 'eventId is required in query' })
-    const checkInStatus = await User.findOne({ _id: id, eventId })
+    // if (!eventId) return res.status(400).json({ success: false, message: 'eventId is required in query' })
+    // const checkInStatus = await User.findOne({ _id: id, eventId })
+    const checkInStatus = await User.findById(id)
       .select("name checkIn eventId member appearing") // only select 'name', 'checkIn', and 'eventId' from user
       .populate({
         path: "eventId",
