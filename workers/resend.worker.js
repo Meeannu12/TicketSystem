@@ -2,6 +2,7 @@ const { Worker } = require("bullmq");
 const IORedis = require("ioredis");
 const { resendQueue } = require("../queues/resend.queue");
 const { getIdsFromDB } = require("../services/resend.service");
+const { resendTicket } = require("../controller/user.controller");
 
 const connection = new IORedis({
     maxRetriesPerRequest: null,
@@ -41,7 +42,8 @@ const worker = new Worker(
 
             try {
                 // await axios.get(`https://api.example.com/data/${id}`);
-                console.log(`Processed index ${index}`);
+                // await resendTicket(id)
+                console.log(`Processed index ${index}, ${id}`);
             } catch (err) {
                 console.error(`Error at index ${index}`, err.message);
                 throw err; // important for retry

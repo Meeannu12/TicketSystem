@@ -13,7 +13,7 @@ const startResend = async (req, res) => {
         // console.log("check in controller what is job ", job)
 
         return res.json({
-            message: "Resend started",
+            message: "Resend started successfully",
             jobId: job.id,
         });
     } catch (err) {

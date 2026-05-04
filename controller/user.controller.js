@@ -21,6 +21,8 @@ const addUser = async (req, res) => {
       });
     }
 
+    if (id === '69a568620282183e81a461d7') return res.status(404).json({ success: false, message: "THIS SLOT IS FULLY BOOKED" })
+
     // check current event is expair or not
     const newEvent = await Event.findById(id);
     const currentDate = new Date();
@@ -144,6 +146,8 @@ const staffAddUser = async (req, res) => {
         },
       });
     }
+
+    if (id === '69a568620282183e81a461d7') return res.status(404).json({ success: false, message: "THIS SLOT IS FULLY BOOKED" })
 
     const newEvent = await Event.findById(id);
     const currentDate = new Date();
@@ -651,8 +655,8 @@ const resendTicket = async (req, res) => {
       link: newUser.url,
     };
 
-    const emaildata = nodeEmailFunction(userData);
-    const numberData = whatsappAPi(userData);
+    const emaildata = await nodeEmailFunction(userData);
+    const numberData = await whatsappAPi(userData);
 
     res.status(200).json({ message: "Ticket resend successful" });
   } catch (error) {
