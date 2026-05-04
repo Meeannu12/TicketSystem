@@ -299,10 +299,50 @@ const getAllLiveEvent = async (req, res) => {
   }
 };
 
+const getAllLiveEventforLMS = async (req, res) => {
+  const course = req.query.course;
+  try {
+    const now = new Date();
+    const filter = {
+      startDate: { $gt: now },
+    };
+    console.log("course", filter);
+    if (req.query.course) filter.eventCourse = course;
+
+    const upcomingEvents = await Event.find(filter);
+
+    res.status(200).json({ message: upcomingEvents });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const updateEventStatus = async (req, res) => {
   const id = req.params.id
   try {
-    const updateEvent = await Event.findByIdAndUpdate(id, { view: false })
+    // const updateEvent = await Event.findByIdAndUpdate(
+    //   id,
+    //   { view: false },
+    //   { new: true, runValidators: true }
+    // );
+
+    // if (!updateEvent) return res.status(404).json({
+    //   success: false,
+    //   message: 'Event not found'
+    // });
+
+
+    const event = await Event.findById(id);
+
+    if (!event) return res.status(404).json({
+      success: false,
+      message: "Event not found"
+    });
+
+    // Toggle value
+    event.view = !event.view;
+
+    await event.save();
 
     res.status(201).json({ success: true, message: 'event update successful' })
   } catch (error) {
@@ -319,5 +359,6 @@ module.exports = {
   getAllEventByAdmin,
   deleteEvent,
   getAllLiveEvent,
-  updateEventStatus
+  updateEventStatus,
+  getAllLiveEventforLMS
 };
