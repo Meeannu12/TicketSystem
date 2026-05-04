@@ -52,6 +52,6 @@ eventRoute.delete(
   deleteEvent
 );
 
-eventRoute.put('/updateEventStatus/:id', adminMiddleware, updateEventStatus)
+eventRoute.put('/updateEventStatus/:id', updateEventStatus)
 
 module.exports = eventRoute;
