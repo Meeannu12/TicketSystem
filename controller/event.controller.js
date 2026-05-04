@@ -1,3 +1,4 @@
+const { tryCatch } = require("bullmq");
 const Event = require("../model/event");
 
 const dateConvertInUTC = (startDate, endTime) => {
@@ -285,6 +286,7 @@ const getAllLiveEvent = async (req, res) => {
     const now = new Date();
     const filter = {
       startDate: { $gt: now },
+      view: true
     };
     console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
@@ -297,6 +299,17 @@ const getAllLiveEvent = async (req, res) => {
   }
 };
 
+const updateEventStatus = async (req, res) => {
+  const id = req.params.id
+  try {
+    const updateEvent = await Event.findByIdAndUpdate(id, { view: false })
+
+    res.status(201).json({ success: true, message: 'event update successful' })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 module.exports = {
   addEvent,
   getEventById,
@@ -306,4 +319,5 @@ module.exports = {
   getAllEventByAdmin,
   deleteEvent,
   getAllLiveEvent,
+  updateEventStatus
 };

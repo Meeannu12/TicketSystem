@@ -8,6 +8,7 @@ const {
   getAllEventByAdmin,
   deleteEvent,
   getAllLiveEvent,
+  updateEventStatus,
 } = require("../controller/event.controller");
 const upload = require("../config/multer");
 const {
@@ -50,5 +51,7 @@ eventRoute.delete(
   adminMiddleware,
   deleteEvent
 );
+
+eventRoute.put('/updateEventStatus/:id', adminMiddleware, updateEventStatus)
 
 module.exports = eventRoute;

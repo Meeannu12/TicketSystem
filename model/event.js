@@ -20,6 +20,10 @@ const EventSchema = new mongoose.Schema(
       type: String,
       default: 'delhi'
     },
+    view: {
+      type: Boolean,
+      default: true
+    },
     ticketName: {
       type: String,
       default: 'Webinar Tickets'
