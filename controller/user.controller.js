@@ -759,6 +759,8 @@ const downloadAllUserforEvent = async (req, res) => {
       FollowUp: user.follow_up,
       Members: user.member?.join(", "),
       CreatedBy: user.createBy,
+      bookOn: user.createdAt,
+
 
       // Event Fields (flattened)
       EventName: user.eventId?.eventName,
