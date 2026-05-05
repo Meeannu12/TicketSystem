@@ -1,3 +1,4 @@
+const { tryCatch } = require("bullmq");
 const { nodeEmailFunction } = require("../config/nodemailer");
 const generateTicketPDF = require("../config/pdfGenrator");
 const { whatsappAPi, confirmationMessage } = require("../config/whatsappAPI");
@@ -731,6 +732,67 @@ const updateUserFollowNumber = async (req, res) => {
   }
 }
 
+
+const downloadAllUserforEvent = async (req, res) => {
+  try {
+
+    const getUsers = await User.find({
+      "createdAt": {
+        "$gte": ISODate("2026-01-01T00:00:00.000Z"),
+        "$lt": ISODate("2027-01-01T00:00:00.000Z")
+      }
+    }).populate({
+      path: "eventId",
+      select: "eventName startDate startTime endTime venue"
+    }).lean()
+
+
+    const formattedData = getUsers.map(user => ({
+      Name: user.name,
+      Phone: user.number,
+      Email: user.email,
+      CheckIn: user.checkIn,
+      CheckInTime: user.checkInTime,
+      Appearing: user.appearing,
+      EmployeeId: user.employeeId,
+      FollowUp: user.follow_up,
+      Members: user.member?.join(", "),
+      CreatedBy: user.createBy,
+
+      // Event Fields (flattened)
+      EventName: user.eventId?.eventName,
+      StartDate: user.eventId?.startDate,
+      StartTime: user.eventId?.startTime,
+      EndTime: user.eventId?.endTime,
+      Venue: user.eventId?.venue,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedData);
+
+    // Workbook create karo aur worksheet attach karo
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+
+
+    const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="EventUsers.xlsx"'
+    );
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+
+    res.send(buffer);
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 module.exports = {
   addUser,
   checkInUser,
@@ -744,5 +806,7 @@ module.exports = {
   directLogin,
   staffAddUser,
   getListbyStaff,
-  updateUserFollowNumber
+  updateUserFollowNumber,
+
+  downloadAllUserforEvent
 };

@@ -288,7 +288,7 @@ const getAllLiveEvent = async (req, res) => {
       startDate: { $gt: now },
       view: true
     };
-    console.log("course", filter);
+    // console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
 
     const upcomingEvents = await Event.find(filter);
@@ -299,6 +299,7 @@ const getAllLiveEvent = async (req, res) => {
   }
 };
 
+
 const getAllLiveEventforLMS = async (req, res) => {
   const course = req.query.course;
   try {
@@ -306,7 +307,7 @@ const getAllLiveEventforLMS = async (req, res) => {
     const filter = {
       startDate: { $gt: now },
     };
-    console.log("course", filter);
+    // console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
 
     const upcomingEvents = await Event.find(filter);

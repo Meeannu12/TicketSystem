@@ -15,6 +15,7 @@ const {
   staffAddUser,
   getListbyStaff,
   updateUserFollowNumber,
+  downloadAllUserforEvent,
 } = require("../controller/user.controller");
 const { appendRow } = require("../config/googleSheetService");
 const {
@@ -64,6 +65,8 @@ userRoutes.put('/updateFollowUser/:id', zoomToken, updateUserFollowNumber)
 userRoutes.post('/startresend', startResend)
 
 userRoutes.get('/getJobStatus/:jobId', getJobStatus)
+
+userRoutes.get('/downloadAllUserforEvent', zoomToken, downloadAllUserforEvent)
 
 
 // crm data enter on google sheet
