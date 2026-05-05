@@ -738,8 +738,8 @@ const downloadAllUserforEvent = async (req, res) => {
 
     const getUsers = await User.find({
       "createdAt": {
-        "$gte": ISODate("2026-01-01T00:00:00.000Z"),
-        "$lt": ISODate("2027-01-01T00:00:00.000Z")
+        "$gte": new Date("2026-01-01T00:00:00.000Z"),
+        "$lt": new Date("2027-01-01T00:00:00.000Z")
       }
     }).populate({
       path: "eventId",
