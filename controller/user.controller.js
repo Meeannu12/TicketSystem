@@ -5,6 +5,7 @@ const { whatsappAPi, confirmationMessage } = require("../config/whatsappAPI");
 const Event = require("../model/event");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
+const XLSX = require('xlsx')
 
 const addUser = async (req, res) => {
   try {
