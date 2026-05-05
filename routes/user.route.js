@@ -66,7 +66,7 @@ userRoutes.post('/startresend', startResend)
 
 userRoutes.get('/getJobStatus/:jobId', getJobStatus)
 
-userRoutes.get('/downloadAllUserforEvent', authMiddleware, downloadAllUserforEvent)
+userRoutes.get('/downloadAllUserforEvent', downloadAllUserforEvent)
 
 
 // crm data enter on google sheet
