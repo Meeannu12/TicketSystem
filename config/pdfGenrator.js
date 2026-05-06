@@ -67,7 +67,7 @@ async function generateTicketPDF(data) {
 
   if (data.member && data.member.length !== 0) {
     doc.moveDown(1)
-    doc.font("Helvetica-Bold").fontSize(13).text("Other's", leftX);
+    doc.font("Helvetica-Bold").fontSize(13).text("Other Member", leftX);
     doc.font("Helvetica").fontSize(11).text(data.member, leftX);
   }
 
@@ -86,10 +86,10 @@ async function generateTicketPDF(data) {
   doc.moveDown(1);
   doc.font("Helvetica-Bold").text("Event Date:", { continued: true });
   doc.font("Helvetica").text(` ${data.eventDate}`);
-  doc.moveDown(0.5);
+  doc.moveDown(1);
   doc.font("Helvetica-Bold").text("Ticket Name:", { continued: true });
   doc.font("Helvetica").text(` ${data.eventName}`);
-  doc.moveDown(0.5);
+  doc.moveDown(1);
   doc.font("Helvetica-Bold").text("Location:", { continued: true });
   doc
     .font("Helvetica")
@@ -106,7 +106,7 @@ async function generateTicketPDF(data) {
   const logoX = (doc.page.width - logoWidth) / 2;
   const logoY = doc.page.height - 110;
 
-  doc.moveDown(2)
+  doc.moveDown(1)
 
   doc.image(logoPath, logoX, logoY, { width: logoWidth });
 
