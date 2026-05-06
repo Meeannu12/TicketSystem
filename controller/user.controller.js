@@ -87,6 +87,7 @@ const addUser = async (req, res) => {
       eventShortName: populatedUser.eventId.eventShortName,
       ticketName: populatedUser.eventId.ticketName,
       location: populatedUser.eventId.venue,
+      member: populatedUser.member,
       locationURL: populatedUser.eventId.locationURL,
     };
 
@@ -214,6 +215,7 @@ const staffAddUser = async (req, res) => {
       eventShortName: populatedUser.eventId.eventShortName,
       ticketName: populatedUser.eventId.ticketName,
       location: populatedUser.eventId.venue,
+      member: populatedUser.member,
       locationURL: populatedUser.eventId.locationURL,
     };
 
