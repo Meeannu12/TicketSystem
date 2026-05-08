@@ -40,7 +40,7 @@ const addUser = async (req, res) => {
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
       number,
-      // email,
+      email,
       eventId: id,
     });
 
@@ -166,7 +166,7 @@ const staffAddUser = async (req, res) => {
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
       number,
-      // email,
+      email,
       eventId: id,
     });
 
@@ -295,7 +295,7 @@ const directLogin = async (req, res) => {
     // check if this event user already exist then throw error
     const existingUser = await User.findOne({
       number,
-      // email,
+      email,
       eventId: id,
     });
 
