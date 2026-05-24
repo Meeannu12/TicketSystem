@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://event.neetadvisor.in",
+      "https://neetexpo.com",
       "http://192.168.0.26:5173",
       "https://neet-exam-guidelines.vercel.app",
       "https://webinar-registration-puce.vercel.app",
