@@ -381,7 +381,7 @@ const getallEventByState = async (req, res) => {
       }
     ])
 
-    res.status(200).json({ success: true, message: 'get live event city', city })
+    res.status(200).json({ success: true, message: 'get live event city', citys })
 
 
 
