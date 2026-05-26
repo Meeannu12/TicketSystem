@@ -10,6 +10,7 @@ const {
   getAllLiveEvent,
   updateEventStatus,
   getAllLiveEventforLMS,
+  getallEventByState,
 } = require("../controller/event.controller");
 const upload = require("../config/multer");
 const {
@@ -54,6 +55,8 @@ eventRoute.delete(
   adminMiddleware,
   deleteEvent
 );
+
+eventRoute.get('/getallEventByState', getallEventByState)
 
 eventRoute.put('/updateEventStatus/:id', updateEventStatus)
 

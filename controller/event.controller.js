@@ -351,6 +351,45 @@ const updateEventStatus = async (req, res) => {
   }
 }
 
+const getallEventByState = async (req, res) => {
+  const course = req.query.course;
+  try {
+
+    const now = new Date();
+    const filter = {
+      startDate: { $gt: now },
+      view: true
+    };
+    // console.log("course", filter);
+    if (req.query.course) filter.eventCourse = course;
+
+    const citys = await Event.aggregate([
+      { $match: filter },
+      {
+        $group: {
+          _id: "$city",
+          name: { $first: "$imageURL" },
+          city: { $first: "$city" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          name: 1,
+          city: 1
+        }
+      }
+    ])
+
+    res.status(200).json({ success: true, message: 'get live event city', city })
+
+
+
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
 module.exports = {
   addEvent,
   getEventById,
@@ -361,5 +400,6 @@ module.exports = {
   deleteEvent,
   getAllLiveEvent,
   updateEventStatus,
-  getAllLiveEventforLMS
+  getAllLiveEventforLMS,
+  getallEventByState
 };
