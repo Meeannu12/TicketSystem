@@ -351,7 +351,7 @@ const updateEventStatus = async (req, res) => {
   }
 }
 
-const getallEventByState = async (req, res) => {
+const getallEventcity = async (req, res) => {
   const course = req.query.course;
   try {
 
@@ -383,8 +383,28 @@ const getallEventByState = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'get live event city', citys })
 
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
 
+// pass the city name and get the all events
+const getAllEventbycity = async (req, res) => {
+  const city = req.params.city;
+  const course = req.query.course;
+  try {
 
+    const now = new Date();
+    const filter = {
+      startDate: { $gt: now },
+      view: true,
+      city
+    };
+    // console.log("course", filter);
+    if (req.query.course) filter.eventCourse = course;
+    const events = await Event.find(filter)
+
+    res.status(200).json({ success: true, message: 'get all event by city', events })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }
@@ -401,5 +421,6 @@ module.exports = {
   getAllLiveEvent,
   updateEventStatus,
   getAllLiveEventforLMS,
-  getallEventByState
+  getallEventcity,
+  getAllEventbycity
 };
