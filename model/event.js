@@ -24,6 +24,10 @@ const EventSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    webview: {
+      type: Boolean,
+      default: true,
+    },
     ticketName: {
       type: String,
       default: 'Webinar Tickets'

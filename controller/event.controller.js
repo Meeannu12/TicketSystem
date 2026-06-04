@@ -321,18 +321,6 @@ const getAllLiveEventforLMS = async (req, res) => {
 const updateEventStatus = async (req, res) => {
   const id = req.params.id
   try {
-    // const updateEvent = await Event.findByIdAndUpdate(
-    //   id,
-    //   { view: false },
-    //   { new: true, runValidators: true }
-    // );
-
-    // if (!updateEvent) return res.status(404).json({
-    //   success: false,
-    //   message: 'Event not found'
-    // });
-
-
     const event = await Event.findById(id);
 
     if (!event) return res.status(404).json({
@@ -346,6 +334,28 @@ const updateEventStatus = async (req, res) => {
     await event.save();
 
     res.status(201).json({ success: true, message: 'event update successful' })
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message })
+  }
+}
+
+// update website view update true or false
+const websiteViewUpdateEventStatus = async (req, res) => {
+  const id = req.params.id
+  try {
+    const event = await Event.findById(id);
+
+    if (!event) return res.status(404).json({
+      success: false,
+      message: "Event not found"
+    });
+
+    // Toggle value
+    event.webview = !event.webview;
+
+    await event.save();
+
+    res.status(201).json({ success: true, message: 'event websiteView update successful' })
   } catch (error) {
     res.status(500).json({ success: false, message: error.message })
   }
@@ -398,6 +408,7 @@ const getAllEventbycity = async (req, res) => {
     const filter = {
       startDate: { $gt: now },
       view: true,
+      webview: true,
       city
     };
     // console.log("course", filter);
@@ -422,5 +433,6 @@ module.exports = {
   updateEventStatus,
   getAllLiveEventforLMS,
   getallEventcity,
-  getAllEventbycity
+  getAllEventbycity,
+  websiteViewUpdateEventStatus
 };
