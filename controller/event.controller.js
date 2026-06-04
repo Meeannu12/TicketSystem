@@ -368,7 +368,8 @@ const getallEventcity = async (req, res) => {
     const now = new Date();
     const filter = {
       startDate: { $gt: now },
-      view: true
+      view: true,
+      webview: true
     };
     // console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
