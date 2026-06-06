@@ -20,6 +20,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://neetexpo.com",
+      "https://www.neetexpo.com",
       "http://192.168.0.26:5173",
       "https://neet-exam-guidelines.vercel.app",
       "https://webinar-registration-puce.vercel.app",
