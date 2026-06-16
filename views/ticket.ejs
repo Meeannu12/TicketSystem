@@ -200,13 +200,33 @@
 
         </div>
 
-        <div class="venue">
+        <!-- <div class="venue">
 
             <h3>Venue:</h3>
 
             <a href="<%= userTicket.eventId.locationURL %>" target="_blank">
                 <%= userTicket.eventId.venue %>
             </a>
+
+        </div> -->
+
+        <div class="venue-section">
+
+            <div class="venue-left">
+                <img src="/images/location_Icon.png" class="location-icon">
+
+                <div>
+                    <h3>Venue:</h3>
+
+                    <a href="<%= userTicket.eventId.locationURL %>" target="_blank">
+                        <%= userTicket.eventId.venue %>
+                    </a>
+                </div>
+            </div>
+
+            <div class="venue-right">
+                <img src="/images/hawa_mahal.png" alt="Venue">
+            </div>
 
         </div>
 
