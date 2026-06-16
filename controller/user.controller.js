@@ -6,6 +6,51 @@ const Event = require("../model/event");
 const User = require("../model/user");
 const jwt = require("jsonwebtoken");
 const XLSX = require('xlsx')
+const QRCode = require("qrcode");
+const path = require("path");
+const assetsDir = path.join(__dirname, "./assets");
+
+
+// get dynamic ticket fetch by id
+
+// https://vps.neetadvisor.in/uploads/ticket_6a2024c31ddcd68729f1a1e5.pdf
+const showDynamicTicket = async (req, res) => {
+  const ticketId = req.params.id
+  try {
+    if (!ticketId) return res.status(404).send("Ticket not found");
+
+    const userTicket = await User.findById(ticketId).populate("eventId")
+
+    if (!userTicket) return res.status(404).send("Ticket not found");
+
+    console.log('user ticket Details', userTicket)
+
+    // Generate QR Code
+    const qrDataURL = await QRCode.toDataURL(userTicket._id.toString());
+
+    // Add logo centered at bottom
+    const logoPath = path.join(assetsDir, "Logo.png");
+
+    // date format 
+    const eventDate = new Date(userTicket.eventId.startDate)
+      .toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric"
+      });
+
+    res.render("ticket", {
+      userTicket,
+      qrDataURL,
+      logoPath,
+      eventDate
+    });
+
+
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
+}
 
 const addUser = async (req, res) => {
   try {
@@ -812,6 +857,6 @@ module.exports = {
   staffAddUser,
   getListbyStaff,
   updateUserFollowNumber,
-
-  downloadAllUserforEvent
+  downloadAllUserforEvent,
+  showDynamicTicket
 };

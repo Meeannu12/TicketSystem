@@ -8,6 +8,7 @@ const userRoutes = require("./routes/user.route");
 const fs = require("fs");
 const path = require("path");
 const linkRoute = require("./routes/link.route");
+const { showDynamicTicket } = require("./controller/user.controller");
 require("dotenv").config();
 // const Events = require("./model/event");
 
@@ -38,6 +39,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 db();
 
+// EJS Setup
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+// Static Files
+app.use(express.static("public"));
+
 // This serves files from "uploads" folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -63,6 +71,9 @@ app.get("/download/:filename", (req, res) => {
     });
   });
 });
+
+
+app.get("/showDynamicTicket/:id", showDynamicTicket)
 
 const api = process.env.API;
 
