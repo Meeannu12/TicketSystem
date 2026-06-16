@@ -14,12 +14,15 @@
 
         body {
             background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
             font-family: Arial, sans-serif;
         }
 
         .ticket-card {
-            max-width: 900px;
-            margin: 30px auto;
+            width: 100%;
+            max-width: 850px;
+            margin: 20px auto;
             background: white;
             border-radius: 20px;
             overflow: hidden;
@@ -76,7 +79,9 @@
         }
 
         .qr-box img {
-            width: 200px;
+            width: 220px;
+            max-width: 100%;
+            height: auto;
         }
 
         .scan-title {
@@ -113,6 +118,14 @@
 
             .content {
                 flex-direction: column;
+            }
+
+            .right {
+                text-align: center;
+            }
+
+            .qr-box img {
+                width: 180px;
             }
 
             .header h1 {
