@@ -135,7 +135,7 @@
         </div>
 
         <div class="description">
-          
+
             <%= userTicket.eventId.eventShortName %>
         </div>
 
@@ -151,7 +151,7 @@
                 <div class="info-row">
                     <strong>Members :</strong>
                     <%# userTicket.members.join(", ") %>
-                    <%= userTicket.member?.join(", ") || "" %>
+                    <%= userTicket.member?.join(" , ") || "" %>
                 </div>
 
             <div class=" info-row">
@@ -162,7 +162,7 @@
                 <div class="info-row">
                     <strong>Event Time :</strong>
                     <%# userTicket.eventTime %>
-                    <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
+                        <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
                 </div>
 
             </div>
@@ -202,7 +202,7 @@
         </div>
 
         <div class="logo">
-            <img src=logoPath>
+            <img src="/images/logo.png" alt="Logo">
         </div>
 
     </div>
