@@ -135,8 +135,7 @@
         </div>
 
         <div class="description">
-            <!-- Attend INDIA'S Mega Event on Rajasthan NEET UG
-            Complete Counselling process & Cutoffs -->
+          
             <%= userTicket.eventId.eventShortName %>
         </div>
 
@@ -151,7 +150,7 @@
 
                 <div class="info-row">
                     <strong>Members :</strong>
-                    <!-- <%= userTicket.members.join(", ") %> -->
+                    <%# userTicket.members.join(", ") %>
                     <%= userTicket.member?.join(", ") || "" %>
                 </div>
 
@@ -162,7 +161,7 @@
 
                 <div class="info-row">
                     <strong>Event Time :</strong>
-                    <!-- <%= userTicket.eventTime %> -->
+                    <%# userTicket.eventTime %>
                     <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
                 </div>
 
