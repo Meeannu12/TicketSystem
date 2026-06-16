@@ -114,6 +114,45 @@
             width: 180px;
         }
 
+        .venue-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 30px;
+        }
+
+        .venue-left {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .location-icon {
+            width: 35px;
+        }
+
+        .venue-left h3 {
+            margin: 0;
+            color: #2a1b7c;
+        }
+
+        .venue-left a {
+            color: #2a1b7c;
+            text-decoration: underline;
+            line-height: 1.4;
+        }
+
+        .venue-right {
+            flex-shrink: 0;
+        }
+
+        .venue-right img {
+            width: 250px;
+            max-width: 100%;
+        }
+
         @media(max-width:768px) {
 
             .content {
@@ -130,6 +169,20 @@
 
             .header h1 {
                 font-size: 28px;
+            }
+
+
+            .venue-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .venue-left {
+                justify-content: center;
+            }
+
+            .venue-right img {
+                width: 180px;
             }
 
         }
