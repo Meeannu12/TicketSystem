@@ -97,12 +97,13 @@
         }
 
         .note {
+            width: 90%;
             background: #24126A;
             color: white;
             text-align: center;
-            margin: 20px;
+            margin: 20px auto;
             padding: 12px;
-            border-radius: 20px;
+            border-radius: 30px;
         }
 
         .logo {
@@ -118,8 +119,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            padding: 20px 30px;
+
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+
+            margin: 20px 30px;
+
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .venue-left {
@@ -136,12 +143,14 @@
         .venue-left h3 {
             margin: 0;
             color: #2a1b7c;
+            font-size: 24px;
         }
 
         .venue-left a {
             color: #2a1b7c;
-            text-decoration: underline;
-            line-height: 1.4;
+            text-decoration: none;
+            line-height: 1.5;
+            font-size: 18px;
         }
 
         .venue-right {
@@ -149,8 +158,9 @@
         }
 
         .venue-right img {
-            width: 250px;
-            max-width: 100%;
+            width: 220px;
+            height: auto;
+            display: block;
         }
 
         @media(max-width:768px) {
