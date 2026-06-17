@@ -57,27 +57,34 @@
 
         <div class="flex flex-col md:flex-row gap-5 p-5 mx-5">
 
-            <div class="flex-[2]">
+            <div class="flex-1 p-5 flex flex-col justify-between">
 
-                <div class="py-5 border-b border-gray-300 text-2xl">
+                <div class="flex-1 py-5 border-b border-black text-2xl">
                     <strong>Attendee :</strong>
                     <%= userTicket.name %>
                 </div>
 
-                <div class="py-5 border-b border-gray-300 text-2xl">
+                <!-- <div class="py-5 border-b border-gray-300 text-2xl">
                     <strong>Members :</strong>
                     <%= userTicket.member?.join(" , ") || "" %>
-                </div>
+                </div> -->
 
-                <div class=" py-5 border-b border-gray-300 text-2xl">
-                        <strong>Event Date :</strong>
-                        <%= eventDate %>
-                </div>
+                <% if (userTicket.member && userTicket.member.length> 0) { %>
+                    <div class="flex-1 py-5 border-b border-black text-2xl">
+                        <strong>Members :</strong>
+                        <%= userTicket.member.join(" , ") %>
+                    </div>
+                <% } %>
 
-                <div class="py-5 border-b border-gray-300 text-2xl">
-                    <strong>Event Time :</strong>
-                    <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
-                </div>
+                <div class=" flex-1 py-5 border-b border-black text-2xl">
+                            <strong>Event Date :</strong>
+                            <%= eventDate %>
+                    </div>
+
+                    <div class="flex-1 py-5 border-b border-black text-2xl">
+                        <strong>Event Time :</strong>
+                        <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
+                    </div>
 
             </div>
 
@@ -132,7 +139,9 @@
         </div>
 
         <div class="w-[90%] mx-auto my-5 bg-[#24126A] text-white text-center py-3 rounded-full">
-            Note : This ticket is valid for 4 members till event end.
+            Note : This ticket is valid for
+            <%= (userTicket.member?.length || 0) + 1 %>
+                members till event end.
         </div>
 
         <div class="text-center pb-5 mt-5 mb-10">
