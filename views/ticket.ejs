@@ -3,305 +3,145 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Ticket</title>
+    <title>Event Ticket</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .cut-line {
+            margin-top: 20px;
+            border-top: 4px dotted #555;
+            position: relative;
         }
 
-        body {
+        .cut-line::before,
+        .cut-line::after {
+            content: "";
+            position: absolute;
+            width: 24px;
+            height: 24px;
             background: #f5f5f5;
-            margin: 0;
-            padding: 20px;
-            font-family: Arial, sans-serif;
+            border-radius: 50%;
+            top: -14px;
         }
 
-        .ticket-card {
-            width: 100%;
-            max-width: 850px;
-            margin: 20px auto;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
+        .cut-line::before {
+            left: -12px;
         }
 
-        .header {
-            background: #24126A;
-            color: white;
-            text-align: center;
-            padding: 30px;
-        }
-
-        .header h1 {
-            font-size: 42px;
-        }
-
-        .description {
-            text-align: center;
-            padding: 30px;
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .content {
-            display: flex;
-            gap: 30px;
-            padding: 30px;
-        }
-
-        .left {
-            flex: 2;
-        }
-
-        .right {
-            flex: 1;
-        }
-
-        .info-row {
-            padding: 20px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .info-row strong {
-            font-size: 20px;
-        }
-
-        .qr-box {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, .15);
-            text-align: center;
-        }
-
-        .qr-box img {
-            width: 220px;
-            max-width: 100%;
-            height: auto;
-        }
-
-        .scan-title {
-            background: #24126A;
-            color: white;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .venue {
-            padding: 20px 30px;
-        }
-
-        .note {
-            width: 90%;
-            background: #24126A;
-            color: white;
-            text-align: center;
-            margin: 20px auto;
-            padding: 12px;
-            border-radius: 30px;
-        }
-
-        .logo {
-            text-align: center;
-            padding: 30px;
-        }
-
-        .logo img {
-            width: 180px;
-        }
-
-        .venue-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-
-            margin: 20px 30px;
-
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .venue-left {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            flex: 1;
-        }
-
-        .location-icon {
-            width: 35px;
-        }
-
-        .venue-left h3 {
-            margin: 0;
-            color: #2a1b7c;
-            font-size: 24px;
-        }
-
-        .venue-left a {
-            color: #2a1b7c;
-            text-decoration: none;
-            line-height: 1.5;
-            font-size: 18px;
-        }
-
-        .venue-right {
-            flex-shrink: 0;
-        }
-
-        .venue-right img {
-            width: 220px;
-            height: auto;
-            display: block;
-        }
-
-        @media(max-width:768px) {
-
-            .content {
-                flex-direction: column;
-            }
-
-            .right {
-                text-align: center;
-            }
-
-            .qr-box img {
-                width: 180px;
-            }
-
-            .header h1 {
-                font-size: 28px;
-            }
-
-
-            .venue-section {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .venue-left {
-                justify-content: center;
-            }
-
-            .venue-right img {
-                width: 180px;
-            }
-
+        .cut-line::after {
+            right: -12px;
         }
     </style>
+
 </head>
 
-<body>
+<body class="bg-[#efefef] p-5 font-sans sm:mt-10">
 
-    <div class="ticket-card">
+    <div class="w-full max-w-[850px]  mx-auto bg-white rounded-[20px] overflow-hidden shadow-lg">
 
-        <div class="header">
-            <!-- <h1>JAIPUR NEET EXPO 2026</h1> -->
-            <h1>
+        <!-- head title -->
+        <div class="bg-[#24126A] text-white text-center py-8">
+            <h1 class="text-4xl font-bold">
+                <!-- JAIPUR NEET EXPO 2026 -->
                 <%= userTicket.eventId.eventName %>
             </h1>
         </div>
 
-        <div class="description">
-
+        <!-- Detail of ticket -->
+        <div class="text-center py-6 px-[10%]  text-xl font-semibold">
+            <!-- Attend INDIA'S Mega Event on Rajasthan NEET UG
+            Complete Counselling process & Cutoffs -->
             <%= userTicket.eventId.eventShortName %>
         </div>
 
-        <div class="content">
 
-            <div class="left">
+        <div class="flex flex-col md:flex-row gap-5 p-5 mx-5">
 
-                <div class="info-row">
+            <div class="flex-[2]">
+
+                <div class="py-5 border-b border-gray-300 text-2xl">
                     <strong>Attendee :</strong>
                     <%= userTicket.name %>
                 </div>
 
-                <div class="info-row">
+                <div class="py-5 border-b border-gray-300 text-2xl">
                     <strong>Members :</strong>
-                    <%# userTicket.members.join(", ") %>
                     <%= userTicket.member?.join(" , ") || "" %>
                 </div>
 
-            <div class=" info-row">
+                <div class=" py-5 border-b border-gray-300 text-2xl">
                         <strong>Event Date :</strong>
                         <%= eventDate %>
                 </div>
 
-                <div class="info-row">
+                <div class="py-5 border-b border-gray-300 text-2xl">
                     <strong>Event Time :</strong>
-                    <%# userTicket.eventTime %>
-                        <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
+                    <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
                 </div>
 
             </div>
 
-            <div class="right">
-
-                <div class="qr-box">
-
-                    <div class="scan-title">
-                        Scan me
-                    </div>
-
-                    <img src="<%= qrDataURL %>" />
-
-                    <p>
-                        <%= userTicket._id %>
-                    </p>
-
+            <div
+                class="w-full max-w-[280px] mx-auto bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.15)] pb-10 relative">
+                <div
+                    class="w-[120px] mx-auto -mt-2 mb-5 bg-[#25137b] text-white text-center px-5 py-2 rounded-b-[20px] text-xl">
+                    Scan me
                 </div>
+
+                <div
+                    class="w-full max-w-[200px] aspect-square mx-auto border-2 border-gray-600 rounded-[10px] flex justify-center items-center">
+                    <img src="<%= qrDataURL %>" class="w-[180px] h-[180px]" />
+                </div>
+
+                <div class="text-center mt-4 text-sm text-gray-600 break-all">
+                    <%= userTicket._id %>
+                </div>
+
+                <div class="cut-line"></div>
 
             </div>
 
         </div>
 
-        <!-- <div class="venue">
+        <!-- Venue Section -->
+        <div
+            class="flex flex-col md:flex-row justify-between items-center px-5 mx-5 bg-white rounded-2xl shadow-md border-4 border-l-yellow-400">
 
-            <h3>Venue:</h3>
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-3 flex-1">
 
-            <a href="<%= userTicket.eventId.locationURL %>" target="_blank">
-                <%= userTicket.eventId.venue %>
-            </a>
-
-        </div> -->
-
-        <div class="venue-section">
-
-            <div class="venue-left">
-                <img src="/images/location_Icon.png" class="location-icon">
+                <img src="/images/location_Icon.png" class="w-[35px] h-[35px]">
 
                 <div>
-                    <h3>Venue:</h3>
 
-                    <a href="<%= userTicket.eventId.locationURL %>" target="_blank">
+                    <h3 class="text-[#24126A] font-bold mb-1">
+                        Venue:
+                    </h3>
+
+                    <a href="<%= userTicket.eventId.locationURL %>" class="text-[#24126A] underline text-xl">
                         <%= userTicket.eventId.venue %>
                     </a>
+
                 </div>
+
             </div>
 
             <div class="venue-right">
-                <img src="/images/hawa_mahal.png" alt="Venue">
+                <img src="/images/hawa_mahal.webp" class="w-[170px] md:w-[220px] h-auto">
             </div>
 
         </div>
 
-        <div class="note">
+        <div class="w-[90%] mx-auto my-5 bg-[#24126A] text-white text-center py-3 rounded-full">
             Note : This ticket is valid for 4 members till event end.
         </div>
 
-        <div class="logo">
-            <img src="/images/Logo.png" alt="Logo">
+        <div class="text-center pb-5 mt-5 mb-10">
+            <img src="images/Neet_Logo.webp" class="w-[180px] mx-auto">
         </div>
 
     </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
 
 </body>
 
