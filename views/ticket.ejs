@@ -7,6 +7,13 @@
     <!-- <link rel="stylesheet" href="style.css"> -->
 
     <style>
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 0;
+            }
+        }
+
         .cut-line {
             margin-top: 20px;
             border-top: 4px dotted #555;
@@ -31,37 +38,43 @@
         .cut-line::after {
             right: -12px;
         }
+
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
     </style>
 
 </head>
 
-<body class="bg-[#efefef] p-5 font-sans sm:mt-10">
+<body class="bg-[#efefef] p-3 font-sans sm:mt-10">
 
-    <div class="w-full max-w-[850px]  mx-auto bg-white rounded-[20px] overflow-hidden shadow-lg">
+    <div class="w-full max-w-[750px]  mx-auto bg-white rounded-[20px] overflow-hidden shadow-lg">
 
         <!-- head title -->
-        <div class="bg-[#24126A] text-white text-center py-8">
-            <h1 class="text-4xl font-bold">
+        <div class="bg-[#24126A] text-white text-center py-5">
+            <h1 class="text-3xl font-bold">
                 <!-- JAIPUR NEET EXPO 2026 -->
                 <%= userTicket.eventId.eventName %>
             </h1>
         </div>
 
         <!-- Detail of ticket -->
-        <div class="text-center py-6 px-[10%]  text-xl font-semibold">
+        <div class="text-center py-2 px-[10%]  text-xl font-semibold">
             <!-- Attend INDIA'S Mega Event on Rajasthan NEET UG
             Complete Counselling process & Cutoffs -->
             <%= userTicket.eventId.eventShortName %>
         </div>
 
 
-        <div class="flex flex-col md:flex-row gap-5 p-5 mx-5">
+        <div class="flex flex-col md:flex-row gap-2 mx-2">
 
-            <div class="flex-1 p-5 flex flex-col justify-between">
+            <div class="flex-1 p-2 flex flex-col justify-between">
 
-                <div class="flex-1 py-5 border-b border-black text-2xl">
-                    <strong>Attendee :</strong>
-                    <%= userTicket.name %>
+                <div class="flex-1 py-2 border-b border-black text-xl flex items-center">
+                    <p><strong>Attendee :</strong>
+                        <%= userTicket.name %>
+                    </p>
                 </div>
 
                 <!-- <div class="py-5 border-b border-gray-300 text-2xl">
@@ -70,20 +83,22 @@
                 </div> -->
 
                 <% if (userTicket.member && userTicket.member.length> 0) { %>
-                    <div class="flex-1 py-5 border-b border-black text-2xl">
-                        <strong>Members :</strong>
-                        <%= userTicket.member.join(" , ") %>
+                    <div class="flex-1 py-1 border-b border-black text-xl flex items-center">
+                        <p><strong>Members :</strong>
+                            <%= userTicket.member.join(" , ") %></p>
                     </div>
                 <% } %>
 
-                <div class=" flex-1 py-5 border-b border-black text-2xl">
-                            <strong>Event Date :</strong>
-                            <%= eventDate %>
+                <div class=" flex-1 py-1 border-b border-black text-xl flex items-center">
+                                <p><strong>Event Date :</strong>
+                                    <%= eventDate %>
+                                </p>
                     </div>
 
-                    <div class="flex-1 py-5 border-b border-black text-2xl">
-                        <strong>Event Time :</strong>
-                        <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
+                    <div class="flex-1 py-1 text-xl flex items-center">
+                        <p><strong>Event Time :</strong>
+                            <%= userTicket.eventId.startTime %> to <%= userTicket.eventId.endTime %>
+                        </p>
                     </div>
 
             </div>
@@ -91,7 +106,7 @@
             <div
                 class="w-full max-w-[280px] mx-auto bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.15)] pb-10 relative">
                 <div
-                    class="w-[120px] mx-auto -mt-2 mb-5 bg-[#25137b] text-white text-center px-5 py-2 rounded-b-[20px] text-xl">
+                    class="w-[120px] mx-auto mt-2 mb-2 bg-[#25137b] text-white text-center px-5 py-2 rounded-b-[20px] text-xl">
                     Scan me
                 </div>
 
