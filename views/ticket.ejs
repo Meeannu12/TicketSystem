@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Event Ticket</title>
     <!-- <link rel="stylesheet" href="style.css"> -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
 
     <style>
         @media print {
@@ -67,9 +69,10 @@
         </div>
 
 
-        <div class="flex flex-col md:flex-row gap-2 mx-2">
+        <!-- <div class="flex flex-col md:flex-row gap-2 mx-2"> -->
+        <div class="flex flex-row gap-2 mx-2 items-stretch">
 
-            <div class="flex-1 p-2 flex flex-col justify-between">
+            <div class="w-[60%] p-2 flex flex-col justify-between">
 
                 <div class="flex-1 py-2 border-b border-black text-xl flex items-center">
                     <p><strong>Attendee :</strong>
@@ -103,8 +106,9 @@
 
             </div>
 
-            <div
-                class="w-full max-w-[280px] mx-auto bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.15)] pb-10 relative">
+            <!-- <div
+                class="w-full max-w-[280px] mx-auto bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.15)] pb-10 relative"> -->
+            <div class="w-[40%] bg-white rounded-xl shadow-[0_40px_80px_rgba(0,0,0,0.15)] pb-4 relative">
                 <div
                     class="w-[120px] mx-auto mt-2 mb-2 bg-[#25137b] text-white text-center px-5 py-2 rounded-b-[20px] text-xl">
                     Scan me
@@ -165,7 +169,6 @@
 
     </div>
 
-    <script src="https://cdn.tailwindcss.com"></script>
 
 </body>
 
