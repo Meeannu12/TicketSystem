@@ -11,6 +11,7 @@ const linkRoute = require("./routes/link.route");
 const { showDynamicTicket } = require("./controller/user.controller");
 const { tryCatch } = require("bullmq");
 const { extractTicketId } = require("./middleware/authmiddleware");
+const { default: puppeteer } = require("puppeteer");
 require("dotenv").config();
 // const Events = require("./model/event");
 
@@ -56,23 +57,53 @@ app.get("/uploads/:id", extractTicketId, showDynamicTicket);
 const uploadFolder = path.join(__dirname, "uploads");
 
 // Endpoint to check and download PDF
-app.get("/download/:filename", (req, res) => {
-  const filename = req.params.filename; 12
-  const filePath = path.join(uploadFolder, `ticket_${filename}.pdf`);
+app.get("/download/:ticketId", async (req, res) => {
+  // const filename = req.params.filename; 12
+  // const filePath = path.join(uploadFolder, `ticket_${filename}.pdf`);
 
-  // Check if the file exists
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      return res.status(404).json({ error: "File not found" });
-    }
+  // // Check if the file exists
+  // fs.access(filePath, fs.constants.F_OK, (err) => {
+  //   if (err) {
+  //     return res.status(404).json({ error: "File not found" });
+  //   }
 
-    // If the file exists, send it for download
-    res.download(filePath, (downloadError) => {
-      if (downloadError) {
-        return res.status(500).json({ error: "Failed to download file" });
-      }
-    });
+  //   // If the file exists, send it for download
+  //   res.download(filePath, (downloadError) => {
+  //     if (downloadError) {
+  //       return res.status(500).json({ error: "Failed to download file" });
+  //     }
+  //   });
+  // });
+  const { ticketId } = req.params;
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox"],
   });
+
+  const page = await browser.newPage();
+
+  await page.goto(
+    `https://vps.neetadvisor.in/uploads/ticket_${ticketId}.pdf`,
+    {
+      waitUntil: "networkidle0",
+    }
+  );
+
+  const pdfBuffer = await page.pdf({
+    format: "A4",
+    printBackground: true,
+  });
+
+  await browser.close();
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename=ticket_${ticketId}.pdf`
+  );
+
+  res.send(pdfBuffer);
 });
 
 
