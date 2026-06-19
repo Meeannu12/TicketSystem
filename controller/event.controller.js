@@ -380,14 +380,16 @@ const getallEventcity = async (req, res) => {
         $group: {
           _id: "$city",
           name: { $first: "$imageURL" },
-          city: { $first: "$city" }
+          city: { $first: "$city" },
+          date:{$first:"$startDate"}
         }
       },
       {
         $project: {
           _id: 0,
           name: 1,
-          city: 1
+          city: 1,
+          date:1
         }
       }
     ])
