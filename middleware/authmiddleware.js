@@ -27,6 +27,22 @@ const adminMiddleware = async (req, res, next) => {
   next();
 };
 
+// modify the parames when the try to access ticket 
+const extractTicketId = (
+  req,
+  res,
+  next
+) => {
+  const { id } = req.params;
+
+  // ticket_6a252ffad8aae07b3c1fb99d.pdf
+  const ticketId = id.replace("ticket_", "").replace(".pdf", "");
+
+  req.params.id = ticketId;
+
+  next();
+};
+
 
 const zoomToken = (req, res, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
@@ -44,5 +60,6 @@ const zoomToken = (req, res, next) => {
 module.exports = {
   authMiddleware,
   adminMiddleware,
-  zoomToken
+  zoomToken,
+  extractTicketId
 };

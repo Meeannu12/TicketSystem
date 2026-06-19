@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const linkRoute = require("./routes/link.route");
 const { showDynamicTicket } = require("./controller/user.controller");
+const { extractTicketId } = require("./middleware/authmiddleware");
 require("dotenv").config();
 // const Events = require("./model/event");
 
@@ -47,7 +48,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 
 // This serves files from "uploads" folder
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.get("/uploads/:id", extractTicketId, showDynamicTicket);
 
 // Folder where PDFs are uploaded
 const uploadFolder = path.join(__dirname, "uploads");
@@ -116,6 +118,21 @@ app.use(`${api}/link`, linkRoute);
 //     res.status(500).json({ message: "Something went wrong while exporting" });
 //   }
 // });
+
+// const extractTicketId = (
+//   req,
+//   res,
+//   next
+// ) => {
+//   const { id } = req.params;
+
+//   // ticket_6a252ffad8aae07b3c1fb99d.pdf
+//   const ticketId = id.replace("ticket_", "").replace(".pdf", "");
+
+//   req.params.id = ticketId;
+
+//   next();
+// };
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);

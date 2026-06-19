@@ -17,6 +17,8 @@ const assetsDir = path.join(__dirname, "./assets");
 const showDynamicTicket = async (req, res) => {
   const ticketId = req.params.id
   try {
+
+    console.log("check ticket Id", ticketId);
     if (!ticketId) return res.status(404).send("Ticket not found");
 
     const userTicket = await User.findById(ticketId).populate("eventId")
