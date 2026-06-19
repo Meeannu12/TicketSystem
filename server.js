@@ -49,7 +49,7 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.static("public"));
 
 // This serves files from "uploads" folder
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/upload", express.static(path.join(__dirname, "uploads")));
 app.get("/uploads/:id", extractTicketId, showDynamicTicket);
 
 // Folder where PDFs are uploaded
