@@ -49,7 +49,7 @@ app.use(express.static("public"));
 
 // This serves files from "uploads" folder
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.get("/uploads/:id",extractTicketId, showDynamicTicket);
+app.get("/uploads/:id", extractTicketId, showDynamicTicket);
 
 // Folder where PDFs are uploaded
 const uploadFolder = path.join(__dirname, "uploads");
@@ -119,20 +119,20 @@ app.use(`${api}/link`, linkRoute);
 //   }
 // });
 
-const extractTicketId = (
-  req,
-  res,
-  next
-) => {
-  const { id } = req.params;
+// const extractTicketId = (
+//   req,
+//   res,
+//   next
+// ) => {
+//   const { id } = req.params;
 
-  // ticket_6a252ffad8aae07b3c1fb99d.pdf
-  const ticketId = id.replace("ticket_", "").replace(".pdf", "");
+//   // ticket_6a252ffad8aae07b3c1fb99d.pdf
+//   const ticketId = id.replace("ticket_", "").replace(".pdf", "");
 
-  req.params.id = ticketId;
+//   req.params.id = ticketId;
 
-  next();
-};
+//   next();
+// };
 
 app.listen(PORT, () => {
   console.log(`Server is running at ${PORT}`);
