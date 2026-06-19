@@ -9,9 +9,8 @@ const fs = require("fs");
 const path = require("path");
 const linkRoute = require("./routes/link.route");
 const { showDynamicTicket } = require("./controller/user.controller");
-const { tryCatch } = require("bullmq");
 const { extractTicketId } = require("./middleware/authmiddleware");
-const { default: puppeteer } = require("puppeteer");
+// const { default: puppeteer } = require("puppeteer");
 require("dotenv").config();
 // const Events = require("./model/event");
 
@@ -58,6 +57,7 @@ const uploadFolder = path.join(__dirname, "uploads");
 
 // Endpoint to check and download PDF
 app.get("/download/:ticketId", async (req, res) => {
+  const puppeteer = await import("puppeteer");
   // const filename = req.params.filename; 12
   // const filePath = path.join(uploadFolder, `ticket_${filename}.pdf`);
 
@@ -76,7 +76,7 @@ app.get("/download/:ticketId", async (req, res) => {
   // });
   const { ticketId } = req.params;
 
-  const browser = await puppeteer.launch({
+  const browser = await puppeteer.default.launch({
     headless: true,
     args: ["--no-sandbox"],
   });

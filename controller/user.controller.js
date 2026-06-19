@@ -25,7 +25,7 @@ const showDynamicTicket = async (req, res) => {
 
     if (!userTicket) return res.status(404).send("Ticket not found");
 
-    console.log('user ticket Details', userTicket)
+    // console.log('user ticket Details', userTicket)
 
     // Generate QR Code
     const qrDataURL = await QRCode.toDataURL(userTicket._id.toString());
