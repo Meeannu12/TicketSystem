@@ -10,6 +10,7 @@ const path = require("path");
 const linkRoute = require("./routes/link.route");
 const { showDynamicTicket } = require("./controller/user.controller");
 const { tryCatch } = require("bullmq");
+const { extractTicketId } = require("./middleware/authmiddleware");
 require("dotenv").config();
 // const Events = require("./model/event");
 
