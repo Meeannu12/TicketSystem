@@ -2,11 +2,14 @@ const { Worker } = require("bullmq");
 const IORedis = require("ioredis");
 const { resendQueue } = require("../queues/resend.queue");
 const { getIdsFromDB } = require("../services/resend.service");
-const { resendTicket } = require("../controller/user.controller");
+const { TicketResendFunction } = require("../controller/user.controller");
 
 const connection = new IORedis({
     maxRetriesPerRequest: null,
 });
+
+
+
 
 // 👇 SINGLE worker handling both job types
 const worker = new Worker(
@@ -42,7 +45,7 @@ const worker = new Worker(
 
             try {
                 // await axios.get(`https://api.example.com/data/${id}`);
-                // await resendTicket(id)
+                await TicketResendFunction(id)
                 console.log(`Processed index ${index}, ${id}`);
             } catch (err) {
                 console.error(`Error at index ${index}`, err.message);

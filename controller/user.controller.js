@@ -680,13 +680,6 @@ const resendTicket = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // const startD = newUser.eventId.startDate.toLocaleString("en-In", {
-    //   timeZone: "Asia/Kolkata",
-    //   year: "numeric",
-    //   month: "short",
-    //   day: "2-digit",
-    // });
-
     const formattedDate = new Date(
       newUser.eventId.startDate
     ).toLocaleDateString("en-IN", {
@@ -845,6 +838,41 @@ const downloadAllUserforEvent = async (req, res) => {
   }
 }
 
+const TicketResendFunction = async (id) => {
+  try {
+    const newUser = await User.findById(id).populate("eventId");
+    if (!newUser) {
+      console.log("User not found");
+    }
+
+    const formattedDate = new Date(
+      newUser.eventId.startDate
+    ).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    const userData = {
+      gmail: newUser.email,
+      number: newUser.number,
+      name: newUser.name,
+      eventShortName: newUser.eventId.eventShortName,
+      eventName: newUser.eventId.eventName,
+      startDate: `${formattedDate} ${newUser.eventId.startTime}`, //to ${populatedUser.eventId.endTime})`,
+      venue: newUser.eventId.venue,
+      link: newUser.url,
+    };
+
+    const emaildata = await nodeEmailFunction(userData);
+    const numberData = await whatsappAPi(userData);
+
+    console.log("Ticket resend successful");
+  } catch (error) {
+    console.log('', error.message)
+  }
+}
+
 module.exports = {
   addUser,
   checkInUser,
@@ -860,5 +888,6 @@ module.exports = {
   getListbyStaff,
   updateUserFollowNumber,
   downloadAllUserforEvent,
-  showDynamicTicket
+  showDynamicTicket,
+  TicketResendFunction
 };
