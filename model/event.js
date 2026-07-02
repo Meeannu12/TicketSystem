@@ -11,10 +11,10 @@ const EventSchema = new mongoose.Schema(
     startTime: String,
     endTime: String,
     eventCourse: String,
-    // endDate: {
-    //   type: Date,
-    //   required: true,
-    // },
+    domain: {
+      type: String,
+      default: 'all'
+    },
     description: String,
     city: {
       type: String,

@@ -363,6 +363,7 @@ const websiteViewUpdateEventStatus = async (req, res) => {
 
 const getallEventcity = async (req, res) => {
   const course = req.query.course;
+  const domain = req.query.domain;
   try {
 
     const now = new Date();
@@ -373,6 +374,7 @@ const getallEventcity = async (req, res) => {
     };
     // console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
+    if (req.query.domain) filter.domain = domain;
 
     const citys = await Event.aggregate([
       { $match: filter },
@@ -381,7 +383,7 @@ const getallEventcity = async (req, res) => {
           _id: "$city",
           name: { $first: "$imageURL" },
           city: { $first: "$city" },
-          date:{$first:"$startDate"}
+          date: { $first: "$startDate" }
         }
       },
       {
@@ -389,7 +391,7 @@ const getallEventcity = async (req, res) => {
           _id: 0,
           name: 1,
           city: 1,
-          date:1
+          date: 1
         }
       }
     ])
@@ -405,6 +407,7 @@ const getallEventcity = async (req, res) => {
 const getAllEventbycity = async (req, res) => {
   const city = req.params.city;
   const course = req.query.course;
+  const domain = req.query.domain;
   try {
 
     const now = new Date();
@@ -416,6 +419,7 @@ const getAllEventbycity = async (req, res) => {
     };
     // console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
+    if (req.query.domain) filter.domain = domain;
     const events = await Event.find(filter)
 
     res.status(200).json({ success: true, message: 'get all event by city', events })
