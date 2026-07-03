@@ -282,6 +282,7 @@ const deleteEvent = async (req, res) => {
 // get All Live Event for staff and user
 const getAllLiveEvent = async (req, res) => {
   const course = req.query.course;
+  const domain = req.query.domain;
   try {
     const now = new Date();
     const filter = {
@@ -290,6 +291,7 @@ const getAllLiveEvent = async (req, res) => {
     };
     // console.log("course", filter);
     if (req.query.course) filter.eventCourse = course;
+    if (req.query.domain) filter.domain = domain;
 
     const upcomingEvents = await Event.find(filter);
 
