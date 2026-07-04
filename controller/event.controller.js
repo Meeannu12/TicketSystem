@@ -192,6 +192,8 @@ const editEvent = async (req, res) => {
       );
     }
     if (req.query.domain) callData.domain = req.query.domain;
+    if (req.query.view) callData.view = req.query.view;
+    if (req.query.webview) callData.webview = req.query.webview;
     // callData.startDate = req.query.startDate;
     if (req.query.startTime) callData.startTime = req.query.startTime;
     if (req.query.endTime) callData.endTime = req.query.endTime;
