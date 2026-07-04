@@ -182,22 +182,6 @@ const editEvent = async (req, res) => {
     }
     const callData = {};
 
-    // const anyPresent =
-    //   req.query.startDate || req.query.startTime || req.query.endTime;
-
-    // // Step 2: If any present BUT not all present → error
-    // if (
-    //   anyPresent &&
-    //   (!req.query.startDate || !req.query.startTime || !req.query.endTime)
-    // ) {
-    //   return res.status(400).json({
-    //     message: {
-    //       startDate: !req.query.startDate ? "startDate is required" : undefined,
-    //       startTime: !req.query.startTime ? "startTime is required" : undefined,
-    //       endTime: !req.query.endTime ? "endTime is required" : undefined,
-    //     },
-    //   });
-    // }
     if (req.query.eventName) callData.eventName = req.query.eventName;
     if (req.query.eventShortName)
       callData.eventShortName = req.query.eventShortName;
@@ -207,10 +191,7 @@ const editEvent = async (req, res) => {
         req.query.endTime
       );
     }
-
-
-
-
+    if (req.query.domain) callData.domain = req.query.domain;
     // callData.startDate = req.query.startDate;
     if (req.query.startTime) callData.startTime = req.query.startTime;
     if (req.query.endTime) callData.endTime = req.query.endTime;
