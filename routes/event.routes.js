@@ -30,7 +30,7 @@ eventRoute.post(
   addEvent
 );
 eventRoute.put(
-  "/updateImage",
+  "/updateImage/:id",
   authMiddleware,
   adminMiddleware,
   upload.single("image"),

@@ -236,7 +236,7 @@ const editEvent = async (req, res) => {
 // reupload  image by admin
 const reUploadEventImageById = async (req, res) => {
   try {
-    const { id } = req.body;
+    const id = req.params.id;
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
     }
