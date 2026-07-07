@@ -298,49 +298,6 @@ const getAllLiveEventforLMS = async (req, res) => {
   }
 };
 
-const updateEventStatus = async (req, res) => {
-  const id = req.params.id
-  try {
-    const event = await Event.findById(id);
-
-    if (!event) return res.status(404).json({
-      success: false,
-      message: "Event not found"
-    });
-
-    // Toggle value
-    event.view = !event.view;
-
-    await event.save();
-
-    res.status(201).json({ success: true, message: 'event update successful' })
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
-  }
-}
-
-// update website view update true or false
-const websiteViewUpdateEventStatus = async (req, res) => {
-  const id = req.params.id
-  try {
-    const event = await Event.findById(id);
-
-    if (!event) return res.status(404).json({
-      success: false,
-      message: "Event not found"
-    });
-
-    // Toggle value
-    event.webview = !event.webview;
-
-    await event.save();
-
-    res.status(201).json({ success: true, message: 'event websiteView update successful' })
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message })
-  }
-}
-
 const getallEventcity = async (req, res) => {
   const course = req.query.course;
   const domain = req.query.domain;
@@ -417,9 +374,7 @@ module.exports = {
   getAllEventByAdmin,
   deleteEvent,
   getAllLiveEvent,
-  updateEventStatus,
   getAllLiveEventforLMS,
   getallEventcity,
   getAllEventbycity,
-  websiteViewUpdateEventStatus
 };
