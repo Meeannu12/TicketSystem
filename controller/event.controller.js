@@ -46,6 +46,9 @@ const addEvent = async (req, res) => {
     venue,
     description,
     locationURL,
+    webview,
+    view,
+    domain
   } = req.body;
   try {
     if (
@@ -89,26 +92,14 @@ const addEvent = async (req, res) => {
       return res.status(400).send("No file uploaded.");
     }
 
-    // console.log(req.file.filename);
-
-    // // Combine:
-    // const date = new Date(startDate);
-    // const [time, modifier] = endTime.split(" ");
-    // let [hours, minutes] = time.split(":").map(Number);
-
-    // if (modifier === "PM" && hours !== 12) hours += 12;
-    // if (modifier === "AM" && hours === 12) hours = 0;
-
-    // date.setHours(hours);
-    // date.setMinutes(minutes);
-
-    // // This is IST, so convert to UTC:
-    // date.setMinutes(date.getMinutes() - 330); // IST = UTC +5:30
-
     // console.log("Store this UTC Date:", date.toISOString());
     const date = dateConvertInUTC(startDate, endTime);
 
-    console.log("getUTC Date", date);
+    // console.log("getUTC Date", date);
+
+    const domains = ['all', 'expo', 'seminar']
+
+    if (!domains.includes(domain)) return res.status(404).json({ success: false, message: 'domain is incorrect' })
 
     let newEvent = new Event({
       eventName,
@@ -122,6 +113,9 @@ const addEvent = async (req, res) => {
       ticketName,
       longitude,
       latitude,
+      webview,
+      view,
+      domain,
       venue,
       imageURL: req.file.filename,
       locationURL,
@@ -212,7 +206,7 @@ const editEvent = async (req, res) => {
     );
     res.status(200).json({ message: "Event update successful" });
   } catch (error) {
-    res.status(500).json({ message: "error.message" });
+    res.status(500).json({ message: error.message });
   }
 };
 

@@ -13,6 +13,7 @@ const EventSchema = new mongoose.Schema(
     eventCourse: String,
     domain: {
       type: String,
+      enum: ['all','expo', 'seminar'],
       default: 'all'
     },
     description: String,
