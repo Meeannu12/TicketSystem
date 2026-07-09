@@ -802,6 +802,7 @@ const downloadAllUserforEvent = async (req, res) => {
       Members: user.member?.join(", "),
       CreatedBy: user.createBy,
       bookOn: user.createdAt,
+      LeadSource: user.leadSource,
 
 
       // Event Fields (flattened)
