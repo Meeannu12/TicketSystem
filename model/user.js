@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema(
       ref: "Events",
       required: true,
     },
+    source: String,
     appearing: String,
     employeeId: String,
     createBy: String,

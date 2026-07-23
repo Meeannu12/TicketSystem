@@ -18,7 +18,7 @@ const showDynamicTicket = async (req, res) => {
   const ticketId = req.params.id
   try {
 
-    console.log("check ticket Id", ticketId);
+    // console.log("check ticket Id", ticketId);
     if (!ticketId) return res.status(404).send("Ticket not found");
 
     const userTicket = await User.findById(ticketId).populate("eventId")
@@ -56,7 +56,7 @@ const showDynamicTicket = async (req, res) => {
 
 const addUser = async (req, res) => {
   try {
-    const { name, number, email, member, appearing } = req.body;
+    const { name, number, email, member, appearing, source } = req.body;
     const id = req.params.id;
     if (!name || !number || !email || !appearing) {
       return res.status(400).json({
@@ -98,7 +98,7 @@ const addUser = async (req, res) => {
       });
     }
 
-    let newUser = new User({
+    const userEntry = {
       name,
       number,
       email,
@@ -106,7 +106,11 @@ const addUser = async (req, res) => {
       createBy: 'self',
       member: member || [],
       appearing,
-    });
+    }
+
+    if (source) userEntry.source = source
+
+    let newUser = new User(userEntry);
 
     newUser = await newUser.save();
 
