@@ -802,6 +802,7 @@ const downloadAllUserforEvent = async (req, res) => {
       CheckInTime: user.checkInTime,
       Appearing: user.appearing,
       EmployeeId: user.employeeId,
+      Source: user.source,
       FollowUp: user.follow_up,
       Members: user.member?.join(", "),
       CreatedBy: user.createBy,
